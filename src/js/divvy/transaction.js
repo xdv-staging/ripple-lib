@@ -8,7 +8,7 @@ var Currency         = require('./amount').Currency;
 var UInt160          = require('./amount').UInt160;
 var Seed             = require('./seed').Seed;
 var SerializedObject = require('./serializedobject').SerializedObject;
-var RippleError      = require('./rippleerror').RippleError;
+var DivvyError      = require('./divvyerror').DivvyError;
 var hashprefixes     = require('./hashprefixes');
 var config           = require('./config');
 var log              = require('./log').internal.sub('transaction');
@@ -102,9 +102,9 @@ Transaction.flags = {
 
   TrustSet: {
     SetAuth:            0x00010000,
-    NoRipple:           0x00020000,
-    SetNoRipple:        0x00020000,
-    ClearNoRipple:      0x00040000,
+    NoDivvy:           0x00020000,
+    SetNoDivvy:        0x00020000,
+    ClearNoDivvy:      0x00040000,
     SetFreeze:          0x00100000,
     ClearFreeze:        0x00200000
   },
@@ -117,7 +117,7 @@ Transaction.flags = {
   },
 
   Payment: {
-    NoRippleDirect:     0x00010000,
+    NoDivvyDirect:     0x00010000,
     PartialPayment:     0x00020000,
     LimitQuality:       0x00040000
   }
@@ -294,11 +294,11 @@ Transaction.prototype._accountSecret = function(account) {
 /**
  * Returns the number of fee units this transaction will cost.
  *
- * Each Ripple transaction based on its type and makeup costs a certain number
+ * Each Divvy transaction based on its type and makeup costs a certain number
  * of fee units. The fee units are calculated on a per-server basis based on the
  * current load on both the network and the server.
  *
- * @see https://ripple.com/wiki/Transaction_Fee
+ * @see https://xdv.io/wiki/Transaction_Fee
  *
  * @return {Number} Number of fee units for this transaction.
  */
@@ -367,7 +367,7 @@ Transaction.prototype._computeFee = function() {
 Transaction.prototype.complete = function() {
   if (this.remote) {
     if (!this.remote.trusted && !this.remote.local_signing) {
-      this.emit('error', new RippleError(
+      this.emit('error', new DivvyError(
         'tejServerUntrusted', 'Attempt to give secret to untrusted server'));
       return false;
     }
@@ -375,7 +375,7 @@ Transaction.prototype.complete = function() {
 
   // Try to auto-fill the secret
   if (!this._secret && !(this._secret = this.getSecret())) {
-    this.emit('error', new RippleError('tejSecretUnknown', 'Missing secret'));
+    this.emit('error', new DivvyError('tejSecretUnknown', 'Missing secret'));
     return false;
   }
 
@@ -385,7 +385,7 @@ Transaction.prototype.complete = function() {
       var key  = seed.get_key(this.tx_json.Account);
       this.tx_json.SigningPubKey = key.to_hex_pub();
     } catch(e) {
-      this.emit('error', new RippleError(
+      this.emit('error', new DivvyError(
         'tejSecretInvalid', 'Invalid secret'));
       return false;
     }
@@ -396,14 +396,14 @@ Transaction.prototype.complete = function() {
   if (this.remote && typeof this.tx_json.Fee === 'undefined') {
     if (this.remote.local_fee || !this.remote.trusted) {
       if (!(this.tx_json.Fee = this._computeFee())) {
-        this.emit('error', new RippleError('tejUnconnected'));
+        this.emit('error', new DivvyError('tejUnconnected'));
         return false;
       }
     }
   }
 
   if (Number(this.tx_json.Fee) > this._maxFee) {
-    this.emit('error', new RippleError(
+    this.emit('error', new DivvyError(
       'tejMaxFeeExceeded', 'Max fee exceeded'));
     return false;
   }
@@ -795,7 +795,7 @@ Transaction.prototype.setFlags = function(flags) {
     if (transaction_flags.hasOwnProperty(flag)) {
       this.tx_json.Flags += transaction_flags[flag];
     } else {
-      return this.emit('error', new RippleError('tejInvalidFlag'));
+      return this.emit('error', new DivvyError('tejInvalidFlag'));
     }
   }
 
@@ -1014,7 +1014,7 @@ Transaction.prototype.offerCreate = function(src, taker_pays, taker_gets, expira
   this.tx_json.TakerGets = Amount.json_rewrite(taker_gets);
 
   if (expiration) {
-    this.tx_json.Expiration = utils.time.toRipple(expiration);
+    this.tx_json.Expiration = utils.time.toDivvy(expiration);
   }
 
   if (cancel_sequence) {
@@ -1030,7 +1030,7 @@ Transaction.prototype.offerCreate = function(src, taker_pays, taker_gets, expira
  * If the RegularKey is set, the private key that corresponds to it can be
  * used to sign transactions instead of the master key
  *
- * The RegularKey must be a valid Ripple Address, or a Hash160 of the public
+ * The RegularKey must be a valid Divvy Address, or a Hash160 of the public
  * key corresponding to the new private signing key.
  *
  * @param {String} account
@@ -1049,7 +1049,7 @@ Transaction.prototype.setRegularKey = function(src, regular_key) {
   }
 
   if (!UInt160.is_valid(regular_key)) {
-    throw new Error('RegularKey must be a valid Ripple Address');
+    throw new Error('RegularKey must be a valid Divvy Address');
   }
 
   this.tx_json.TransactionType = 'SetRegularKey';
@@ -1110,7 +1110,7 @@ Transaction.prototype.payment = function(src, dst, amount) {
  */
 
 Transaction.prototype.trustSet =
-Transaction.prototype.rippleLineSet = function(src, limit, quality_in, quality_out) {
+Transaction.prototype.divvyLineSet = function(src, limit, quality_in, quality_out) {
   if (typeof src === 'object') {
     var options = src;
     quality_out = options.quality_out;
@@ -1155,8 +1155,8 @@ Transaction.prototype.submit = function(callback) {
   this.callback = (typeof callback === 'function') ? callback : function(){};
 
   this._errorHandler = function transactionError(error, message) {
-    if (!(error instanceof RippleError)) {
-      error = new RippleError(error, message);
+    if (!(error instanceof DivvyError)) {
+      error = new DivvyError(error, message);
     }
     self.callback(error);
   };
@@ -1177,7 +1177,7 @@ Transaction.prototype.submit = function(callback) {
 
 Transaction.prototype.abort = function() {
   if (!this.finalized) {
-    this.emit('error', new RippleError('tejAbort', 'Transaction aborted'));
+    this.emit('error', new DivvyError('tejAbort', 'Transaction aborted'));
   }
 };
 

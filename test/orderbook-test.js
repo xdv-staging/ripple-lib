@@ -1,8 +1,8 @@
 var assert = require('assert-diff');
-var Remote  = require('ripple-lib').Remote;
-var Currency = require('ripple-lib').Currency;
-var Amount = require('ripple-lib').Amount;
-var Meta = require('ripple-lib').Meta;
+var Remote  = require('divvy-lib').Remote;
+var Currency = require('divvy-lib').Currency;
+var Amount = require('divvy-lib').Amount;
+var Meta = require('divvy-lib').Meta;
 
 describe('OrderBook', function() {
   it('toJSON', function() {
@@ -518,7 +518,7 @@ describe('OrderBook', function() {
             },
             LowNode: '0000000000000000'
           },
-          LedgerEntryType: 'RippleState',
+          LedgerEntryType: 'DivvyState',
           LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
           PreviousFields: {
             Balance: {
@@ -568,7 +568,7 @@ describe('OrderBook', function() {
             },
             LowNode: '0000000000000000'
           },
-          LedgerEntryType: 'RippleState',
+          LedgerEntryType: 'DivvyState',
           LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
           PreviousTxnID: '53354D84BAE8FDFC3F4DA879D984D24B929E7FEB9100D2AD9EFCD2E126BCCDC8',
           PreviousTxnLgrSeq: 343570
@@ -611,7 +611,7 @@ describe('OrderBook', function() {
             },
             LowNode: '0000000000000000'
           },
-          LedgerEntryType: 'RippleState',
+          LedgerEntryType: 'DivvyState',
           LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
           PreviousFields: {
             Balance: {
@@ -661,7 +661,7 @@ describe('OrderBook', function() {
             },
             LowNode: '0000000000000000'
           },
-          LedgerEntryType: 'RippleState',
+          LedgerEntryType: 'DivvyState',
           LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
           PreviousFields: {
             Balance: {
@@ -777,7 +777,7 @@ describe('OrderBook', function() {
               },
               LowNode: '0000000000000000'
             },
-            LedgerEntryType: 'RippleState',
+            LedgerEntryType: 'DivvyState',
             LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
             PreviousFields: {
               Balance: {
@@ -812,7 +812,7 @@ describe('OrderBook', function() {
               },
               LowNode: '0000000000000000'
             },
-            LedgerEntryType: 'RippleState',
+            LedgerEntryType: 'DivvyState',
             LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
             PreviousFields: {
               Balance: {
@@ -913,7 +913,7 @@ describe('OrderBook', function() {
               },
               LowNode: '0000000000000000'
             },
-            LedgerEntryType: 'RippleState',
+            LedgerEntryType: 'DivvyState',
             LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
             PreviousFields: {
               Balance: {
@@ -1355,7 +1355,7 @@ describe('OrderBook', function() {
               },
               LowNode: '0000000000000000'
             },
-            LedgerEntryType: 'RippleState',
+            LedgerEntryType: 'DivvyState',
             LedgerIndex: 'EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959',
             PreviousTxnID: '53354D84BAE8FDFC3F4DA879D984D24B929E7FEB9100D2AD9EFCD2E126BCCDC8',
             PreviousTxnLgrSeq: 343570

@@ -3,7 +3,7 @@ var assert       = require('assert');
 var async        = require('async');
 var EventEmitter = require('events').EventEmitter;
 var Transaction  = require('./transaction').Transaction;
-var RippleError  = require('./rippleerror').RippleError;
+var DivvyError  = require('./divvyerror').DivvyError;
 var PendingQueue = require('./transactionqueue').TransactionQueue;
 var log          = require('./log').internal.sub('transactionmanager');
 
@@ -259,7 +259,7 @@ TransactionManager.prototype._updatePendingStatus = function(ledger) {
 
     if (ledger.ledger_index > transaction.tx_json.LastLedgerSequence) {
       // Transaction must fail
-      transaction.emit('error', new RippleError(
+      transaction.emit('error', new DivvyError(
         'tejMaxLedger', 'Transaction LastLedgerSequence exceeded'));
     }
   });
@@ -523,13 +523,13 @@ TransactionManager.prototype._request = function(tx) {
   }
 
   if (tx.attempts > this._maxAttempts) {
-    tx.emit('error', new RippleError('tejAttemptsExceeded'));
+    tx.emit('error', new DivvyError('tejAttemptsExceeded'));
     return;
   }
 
   if (tx.attempts > 0 && !remote.local_signing) {
     var message = 'Automatic resubmission requires local signing';
-    tx.emit('error', new RippleError('tejLocalSigningRequired', message));
+    tx.emit('error', new DivvyError('tejLocalSigningRequired', message));
     return;
   }
 

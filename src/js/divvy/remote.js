@@ -1,4 +1,4 @@
-// Interface to manage connections to rippled servers
+// Interface to manage connections to divvyd servers
 //
 // - We never send binary data.
 // - We use the W3C interface for node and browser compatibility:
@@ -30,7 +30,7 @@ var Meta = require('./meta').Meta;
 var OrderBook = require('./orderbook').OrderBook;
 var PathFind = require('./pathfind').PathFind;
 var SerializedObject = require('./serializedobject').SerializedObject;
-var RippleError = require('./rippleerror').RippleError;
+var DivvyError = require('./divvyerror').DivvyError;
 var utils = require('./utils');
 var sjcl = require('./utils').sjcl;
 var hashprefixes = require('./hashprefixes');
@@ -38,7 +38,7 @@ var config = require('./config');
 var log = require('./log').internal.sub('remote');
 
 /**
- * Interface to manage connections to rippled servers
+ * Interface to manage connections to divvyd servers
  *
  * @param {Object} Options
  */
@@ -224,14 +224,14 @@ Remote.flags = {
     Passive: 0x00010000,
     Sell: 0x00020000  // offer was placed as a sell
   },
-  // Ripple tate
+  // Divvy tate
   state: {
     LowReserve: 0x00010000, // entry counts toward reserve
     HighReserve: 0x00020000,
     LowAuth: 0x00040000,
     HighAuth: 0x00080000,
-    LowNoRipple: 0x00100000,
-    HighNoRipple: 0x00200000
+    LowNoDivvy: 0x00100000,
+    HighNoDivvy: 0x00200000
   }
 };
 
@@ -425,7 +425,7 @@ Remote.prototype.addServer = function(opts) {
 };
 
 /**
- * Reconnect to Ripple network
+ * Reconnect to Divvy network
  */
 
 Remote.prototype.reconnect = function() {
@@ -443,7 +443,7 @@ Remote.prototype.reconnect = function() {
 };
 
 /**
- * Connect to the Ripple network
+ * Connect to the Divvy network
  *
  * @param {Function} callback
  * @api public
@@ -468,7 +468,7 @@ Remote.prototype.connect = function(callback) {
 };
 
 /**
- * Disconnect from the Ripple network.
+ * Disconnect from the Divvy network.
  *
  * @param {Function} callback
  * @api public
@@ -518,7 +518,7 @@ Remote.prototype._handleMessage = function(message, server) {
 
   if (!Remote.isValidMessage(message)) {
     // Unexpected response from remote.
-    this.emit('error', new RippleError('remoteUnexpected',
+    this.emit('error', new DivvyError('remoteUnexpected',
       'Unexpected response from remote'));
     return;
   }
@@ -936,7 +936,7 @@ Remote.prototype.requestLedgerCurrent = function(callback) {
  * Get the contents of a specified ledger
  *
  * @param {Object} options
- * @property {Boolean} [options.binary]       - Flag which determines if rippled returns binary or parsed JSON
+ * @property {Boolean} [options.binary]       - Flag which determines if divvyd returns binary or parsed JSON
  * @property {String|Number} [options.ledger] - Hash or sequence of a ledger to get contents for
  * @property {Number} [options.limit]         - Number of contents to retrieve from the ledger
  * @property {Function} callback
@@ -1151,7 +1151,7 @@ Remote.prototype.requestTransactionEntry = function(hash, ledgerHash, callback) 
  *
  * @param {Object|String} hash
  * @property {String} hash.hash           - Transaction hash
- * @property {Boolean} [hash.binary=true] - Flag which determines if rippled returns binary or parsed JSON
+ * @property {Boolean} [hash.binary=true] - Flag which determines if divvyd returns binary or parsed JSON
  * @param [Function] callback
  * @return {Request} request
  */
@@ -1191,16 +1191,16 @@ Remote.prototype.requestTx = function(hash, callback) {
  * Account Request
  *
  * Optional paging with limit and marker options
- * supported in rippled for 'account_lines' and 'account_offers'
+ * supported in divvyd for 'account_lines' and 'account_offers'
  *
  * The paged responses aren't guaranteed to be reliable between
  * ledger closes. You have to supply a ledger_index or ledger_hash
  * when paging to ensure a complete response
  *
  * @param {String} type - request name, e.g. 'account_lines'
- * @param {String} account - ripple address
+ * @param {String} account - divvy address
  * @param {Object} options - all optional
- *   @param {String} peer - ripple address
+ *   @param {String} peer - divvy address
  *   @param [String|Number] ledger identifier
  *   @param [Number] limit - max results per response
  *   @param {String} marker - start position in response paging
@@ -1280,8 +1280,8 @@ Remote.accountRequest = function(type, options, callback) {
  * Request account_info
  *
  * @param {Object} options
- *   @param {String} account - ripple address
- *   @param {String} peer - ripple address
+ *   @param {String} account - divvy address
+ *   @param {String} peer - divvy address
  *   @param [String|Number] ledger identifier
  * @param [Function] callback
  * @return {Request}
@@ -1296,8 +1296,8 @@ Remote.prototype.requestAccountInfo = function() {
  * Request account_currencies
  *
  * @param {Object} options
- *   @param {String} account - ripple address
- *   @param {String} peer - ripple address
+ *   @param {String} account - divvy address
+ *   @param {String} peer - divvy address
  *   @param [String|Number] ledger identifier
  * @param [Function] callback
  * @return {Request}
@@ -1319,8 +1319,8 @@ Remote.prototype.requestAccountCurrencies = function() {
  * when paging to ensure a complete response
  *
  * @param {Object} options
- *   @param {String} account - ripple address
- *   @param {String} peer - ripple address
+ *   @param {String} account - divvy address
+ *   @param {String} peer - divvy address
  *   @param [String|Number] ledger identifier
  *   @param [Number] limit - max results per response
  *   @param {String} marker - start position in response paging
@@ -1346,7 +1346,7 @@ Remote.prototype.requestAccountLines = function() {
  * when paging to ensure a complete response
  *
  * @param {Object} options
- *   @param {String} account - ripple address
+ *   @param {String} account - divvy address
  *   @param [String|Number] ledger identifier
  *   @param [Number] limit - max results per response
  *   @param {String} marker - start position in response paging
@@ -1776,7 +1776,7 @@ Remote.prototype._serverPrepareSubscribe = function(server, callback) {
 Remote.prototype.ledgerAccept =
 Remote.prototype.requestLedgerAccept = function(callback) {
   if (!this._stand_alone) {
-    this.emit('error', new RippleError('notStandAlone'));
+    this.emit('error', new DivvyError('notStandAlone'));
     return;
   }
 
@@ -2181,7 +2181,7 @@ Remote.prototype.requestOffer = function(options, callback) {
  * @return {Request}
  */
 
-Remote.prototype.requestRippleBalance = function(account, issuer, currency, ledger, callback) {
+Remote.prototype.requestDivvyBalance = function(account, issuer, currency, ledger, callback) {
   if (typeof account === 'object') {
     var options = account;
     callback = issuer;
@@ -2195,12 +2195,12 @@ Remote.prototype.requestRippleBalance = function(account, issuer, currency, ledg
   }
 
   // YYY Could be cached per ledger.
-  var request = this.requestLedgerEntry('ripple_state');
+  var request = this.requestLedgerEntry('divvy_state');
 
-  request.rippleState(account, issuer, currency);
+  request.divvyState(account, issuer, currency);
   request.selectLedger(ledger);
 
-  function rippleState(message) {
+  function divvyState(message) {
     var node = message.node;
     var lowLimit = Amount.from_json(node.LowLimit);
     var highLimit = Amount.from_json(node.HighLimit);
@@ -2212,7 +2212,7 @@ Remote.prototype.requestRippleBalance = function(account, issuer, currency, ledg
     // limit set by account.
     var accountHigh = UInt160.from_json(account).equals(highLimit.issuer());
 
-    request.emit('ripple_state', {
+    request.emit('divvy_state', {
       account_balance: (accountHigh
         ? balance.negate()
         : balance.clone()).parse_issuer(account),
@@ -2240,8 +2240,8 @@ Remote.prototype.requestRippleBalance = function(account, issuer, currency, ledg
     });
   };
 
-  request.once('success', rippleState);
-  request.callback(callback, 'ripple_state');
+  request.once('success', divvyState);
+  request.callback(callback, 'divvy_state');
 
   return request;
 };
@@ -2263,14 +2263,14 @@ Remote.prepareCurrencies = function(currency) {
 };
 
 /**
- * Request ripple_path_find
+ * Request divvy_path_find
  *
  * @param {Object} options
  * @param [Function] callback
  * @return {Request}
  */
 
-Remote.prototype.requestRipplePathFind = function(src_account, dst_account, dst_amount, src_currencies, callback) {
+Remote.prototype.requestDivvyPathFind = function(src_account, dst_account, dst_amount, src_currencies, callback) {
   if (typeof src_account === 'object') {
     var options = src_account;
     callback = dst_account;
@@ -2283,7 +2283,7 @@ Remote.prototype.requestRipplePathFind = function(src_account, dst_account, dst_
       + ' an object containing request properties');
   }
 
-  var request = new Request(this, 'ripple_path_find');
+  var request = new Request(this, 'divvy_path_find');
 
   request.message.source_account = UInt160.json_rewrite(src_account);
   request.message.destination_account = UInt160.json_rewrite(dst_account);

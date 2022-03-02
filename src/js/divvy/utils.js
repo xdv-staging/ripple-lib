@@ -131,7 +131,7 @@ function arrayUnique(arr) {
 };
 
 /**
- * Convert a ripple epoch to a JavaScript timestamp.
+ * Convert a divvy epoch to a JavaScript timestamp.
  *
  * JavaScript timestamps are unix epoch in milliseconds.
  */
@@ -140,7 +140,7 @@ function toTimestamp(rpepoch) {
 };
 
 /**
- * Convert a JavaScript timestamp or Date to a Ripple epoch.
+ * Convert a JavaScript timestamp or Date to a Divvy epoch.
  *
  * JavaScript timestamps are unix epoch in milliseconds.
  */
@@ -153,8 +153,8 @@ function fromTimestamp(rpepoch) {
 };
 
 exports.time = {
-  fromRipple: toTimestamp,
-  toRipple: fromTimestamp
+  fromDivvy: toTimestamp,
+  toDivvy: fromTimestamp
 };
 
 exports.trace         = trace;

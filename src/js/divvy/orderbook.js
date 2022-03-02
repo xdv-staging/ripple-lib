@@ -152,7 +152,7 @@ OrderBook.prototype.subscribe = function() {
 };
 
 /**
- * Unhook event listeners and prevent ripple-lib from further work on this
+ * Unhook event listeners and prevent divvy-lib from further work on this
  * orderbook. There is no more orderbook stream, so "unsubscribe" is nominal
  */
 
@@ -479,7 +479,7 @@ OrderBook.prototype.setFundedAmount = function(offer, fundedAmount) {
 
 /**
  * DEPRECATED:
- * Should only be called for old versions of rippled
+ * Should only be called for old versions of divvyd
  *
  * Determine what an account is funded to offer for orderbook's
  * currency/issuer
@@ -576,7 +576,7 @@ OrderBook.prototype.requestFundedAmount = function(account, callback) {
 /**
  * Get changed balance of an affected node
  *
- * @param {Object} RippleState or AccountRoot node
+ * @param {Object} DivvyState or AccountRoot node
  * @return {Object} { account, balance }
  */
 
@@ -592,7 +592,7 @@ OrderBook.prototype.getBalanceChange = function(node) {
       result.balance = node.fieldsFinal.Balance;
       break;
 
-    case 'RippleState':
+    case 'DivvyState':
       if (node.fields.HighLimit.issuer === this._issuerGets) {
         result.account = node.fields.LowLimit.issuer;
         result.balance = node.fieldsFinal.Balance.value;
@@ -615,7 +615,7 @@ OrderBook.prototype.getBalanceChange = function(node) {
 /**
  * Check that affected node represents a balance change
  *
- * @param {Object} RippleState or AccountRoot node
+ * @param {Object} DivvyState or AccountRoot node
  * @return {Boolean}
  */
 
@@ -679,7 +679,7 @@ OrderBook.prototype.updateFundedAmounts = function(transaction) {
 
   var affectedNodes = transaction.mmeta.getNodes({
     nodeType: 'ModifiedNode',
-    entryType: this._currencyGets.is_native() ? 'AccountRoot' : 'RippleState'
+    entryType: this._currencyGets.is_native() ? 'AccountRoot' : 'DivvyState'
   });
 
   for (var i=0, l=affectedNodes.length; i<l; i++) {
