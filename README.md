@@ -1,6 +1,6 @@
-# divvy-lib
+# Divvy-lib
 
-A JavaScript API for interacting with the XDV Ledger
+Divvy-lib is a JavaScript API for interacting with the XDV Ledger
 
 [![NPM](https://nodei.co/npm/divvy-lib.png)](https://www.npmjs.org/package/divvy-lib)
 
