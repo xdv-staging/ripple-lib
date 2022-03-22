@@ -1,32 +1,32 @@
-# ripple-lib
+# divvy-lib
 
-A JavaScript API for interacting with the XRP Ledger
+A JavaScript API for interacting with the XDV Ledger
 
-[![Circle CI](https://circleci.com/gh/ripple/ripple-lib/tree/develop.svg?style=svg)](https://circleci.com/gh/ripple/ripple-lib/tree/develop) [![Coverage Status](https://coveralls.io/repos/ripple/ripple-lib/badge.png?branch=develop)](https://coveralls.io/r/ripple/ripple-lib?branch=develop)
+[![Circle CI](https://circleci.com/gh/divvy/divvy-lib/tree/develop.svg?style=svg)](https://circleci.com/gh/divvy/divvy-lib/tree/develop) [![Coverage Status](https://coveralls.io/repos/divvy/divvy-lib/badge.png?branch=develop)](https://coveralls.io/r/divvy/divvy-lib?branch=develop)
 
-[![NPM](https://nodei.co/npm/ripple-lib.png)](https://www.npmjs.org/package/ripple-lib)
+[![NPM](https://nodei.co/npm/divvy-lib.png)](https://www.npmjs.org/package/divvy-lib)
 
 ### Features
 
-+ Connect to a `rippled` server from Node.js or a web browser
-+ Issue [rippled API](https://ripple.com/build/rippled-apis/) requests
-+ Listen to events on the XRP Ledger (transaction, ledger, etc.)
-+ Sign and submit transactions to the XRP Ledger
++ Connect to a `divvyd` server from Node.js or a web browser
++ Issue [divvyd API](https://divvy.com/build/divvyd-apis/) requests
++ Listen to events on the XDV Ledger (transaction, ledger, etc.)
++ Sign and submit transactions to the XDV Ledger
 
 ## Getting Started
 
-See also: [RippleAPI Beginners Guide](https://ripple.com/build/rippleapi-beginners-guide/)
+See also: [DivvyAPI Beginners Guide](https://divvy.com/build/divvyapi-beginners-guide/)
 
 You can use `npm`, but we recommend using `yarn` for the added assurance provided by `yarn.lock`.
 
 + [Yarn Installation Instructions](https://yarnpkg.com/en/docs/install)
 
-Install `ripple-lib`:
+Install `divvy-lib`:
 ```
-$ yarn add ripple-lib
+$ yarn add divvy-lib
 ```
 
-Then see the [documentation](https://github.com/ripple/ripple-lib/blob/develop/docs/index.md) and [code samples](https://github.com/ripple/ripple-lib/tree/develop/docs/samples)
+Then see the [documentation](https://github.com/divvy/divvy-lib/blob/develop/docs/index.md) and [code samples](https://github.com/divvy/divvy-lib/tree/develop/docs/samples)
 
 ## Running tests
 
@@ -42,4 +42,4 @@ The continuous integration tests require that the documentation stays up-to-date
 
 ## More Information
 
-+ [Ripple Developer Center](https://ripple.com/build/)
++ [Divvy Developer Center](https://divvy.com/build/)

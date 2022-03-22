@@ -6,8 +6,8 @@ const assert = require('assert');
 const errors = require('../../src/common/errors');
 const wallet = require('./wallet');
 const requests = require('../fixtures/requests');
-const RippleAPI = require('ripple-api').RippleAPI;
-const {isValidAddress} = require('ripple-address-codec');
+const DivvyAPI = require('divvy-api').DivvyAPI;
+const {isValidAddress} = require('divvy-address-codec');
 const {isValidSecret} = require('../../src/common');
 const {payTo, ledgerAccept} = require('./utils');
 
@@ -71,8 +71,8 @@ function testTransaction(testcase, type, lastClosedLedgerVersion, prepared,
   });
 }
 
-function setup(server = 'wss://s1.ripple.com') {
-  this.api = new RippleAPI({server});
+function setup(server = 'wss://s1.divvy.com') {
+  this.api = new DivvyAPI({server});
   console.log('CONNECTING...');
   return this.api.connect().then(() => {
     console.log('CONNECTED...');
@@ -121,7 +121,7 @@ function setupAccounts(testcase) {
     .then(() => payTo(api, 'rKmBGxocj9Abgy25J51Mk1iqFzW9aVF9Tc'))
     .then(() => payTo(api, 'rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q'))
     .then(() => {
-      return api.prepareSettings(masterAccount, {defaultRipple: true})
+      return api.prepareSettings(masterAccount, {defaultDivvy: true})
       .then(data => api.sign(data.txJSON, masterSecret))
       .then(signed => api.submit(signed.signedTransaction))
       .then(() => ledgerAccept(api));
@@ -141,7 +141,7 @@ function setupAccounts(testcase) {
           counterparty: masterAccount
         },
         totalPrice: {
-          currency: 'XRP',
+          currency: 'XDV',
           value: '432'
         }
       };
@@ -152,7 +152,7 @@ function setupAccounts(testcase) {
       const orderSpecification = {
         direction: 'buy',
         quantity: {
-          currency: 'XRP',
+          currency: 'XDV',
           value: '1741'
         },
         totalPrice: {
@@ -217,7 +217,7 @@ describe('integration tests', function() {
 
 
   it('payment', function() {
-    const amount = {currency: 'XRP', value: '0.000001'};
+    const amount = {currency: 'XDV', value: '0.000001'};
     const paymentSpecification = {
       source: {
         address: address,
@@ -245,7 +245,7 @@ describe('integration tests', function() {
         counterparty: 'rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q'
       },
       totalPrice: {
-        currency: 'XRP',
+        currency: 'XDV',
         value: '0.0002'
       }
     };
@@ -351,7 +351,7 @@ describe('integration tests', function() {
   it('getOrderbook', function() {
     const orderbook = {
       base: {
-        currency: 'XRP'
+        currency: 'XDV'
       },
       counter: {
         currency: 'USD',
@@ -365,13 +365,13 @@ describe('integration tests', function() {
       assert(bid && bid.specification && bid.specification.quantity);
       assert(bid.specification.totalPrice);
       assert.strictEqual(bid.specification.direction, 'buy');
-      assert.strictEqual(bid.specification.quantity.currency, 'XRP');
+      assert.strictEqual(bid.specification.quantity.currency, 'XDV');
       assert.strictEqual(bid.specification.totalPrice.currency, 'USD');
       const ask = book.asks[0];
       assert(ask && ask.specification && ask.specification.quantity);
       assert(ask.specification.totalPrice);
       assert.strictEqual(ask.specification.direction, 'sell');
-      assert.strictEqual(ask.specification.quantity.currency, 'XRP');
+      assert.strictEqual(ask.specification.quantity.currency, 'XDV');
       assert.strictEqual(ask.specification.totalPrice.currency, 'USD');
     });
   });
@@ -441,7 +441,7 @@ describe('integration tests', function() {
 
 });
 
-describe('integration tests - standalone rippled', function() {
+describe('integration tests - standalone divvyd', function() {
   const instructions = {maxLedgerVersionOffset: 10};
   this.timeout(TIMEOUT);
 

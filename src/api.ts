@@ -98,7 +98,7 @@ export class RestrictedConnection extends Connection {
   }
 }
 
-class RippleAPI extends EventEmitter {
+class DivvyAPI extends EventEmitter {
 
   _feeCushion: number
   connection: RestrictedConnection
@@ -269,5 +269,5 @@ class RippleAPI extends EventEmitter {
 }
 
 export {
-  RippleAPI
+  DivvyAPI
 }

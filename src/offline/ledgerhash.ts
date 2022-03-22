@@ -1,11 +1,11 @@
 import * as _ from 'lodash'
-import hashes = require('ripple-hashes')
+import hashes = require('divvy-hashes')
 import * as common from '../common'
 
 function convertLedgerHeader(header): any {
   return {
     account_hash: header.stateHash,
-    close_time: common.iso8601ToRippleTime(header.closeTime),
+    close_time: common.iso8601ToDivvyTime(header.closeTime),
     close_time_resolution: header.closeTimeResolution,
     close_flags: header.closeFlags,
     hash: header.ledgerHash,
@@ -13,7 +13,7 @@ function convertLedgerHeader(header): any {
     ledger_index: header.ledgerVersion.toString(),
     seqNum: header.ledgerVersion.toString(),
     parent_hash: header.parentLedgerHash,
-    parent_close_time: common.iso8601ToRippleTime(header.parentCloseTime),
+    parent_close_time: common.iso8601ToDivvyTime(header.parentCloseTime),
     total_coins: header.totalDrops,
     totalCoins: header.totalDrops,
     transaction_hash: header.transactionHash

@@ -1,5 +1,5 @@
 import * as utils from './utils'
-import {validate, iso8601ToRippleTime, xrpToDrops} from '../common'
+import {validate, iso8601ToDivvyTime, xdvToDrops} from '../common'
 import {Instructions, Prepare} from './types'
 
 export type PaymentChannelFund = {
@@ -15,11 +15,11 @@ function createPaymentChannelFundTransaction(account: string,
     Account: account,
     TransactionType: 'PaymentChannelFund',
     Channel: fund.channel,
-    Amount: xrpToDrops(fund.amount)
+    Amount: xdvToDrops(fund.amount)
   }
 
   if (fund.expiration !== undefined) {
-    txJSON.Expiration = iso8601ToRippleTime(fund.expiration)
+    txJSON.Expiration = iso8601ToDivvyTime(fund.expiration)
   }
 
   return txJSON

@@ -1,4 +1,4 @@
-import {RippledAmount} from '../objects'
+import {DivvydAmount} from '../objects'
 
 export interface AccountOffersRequest {
   account: string,
@@ -20,8 +20,8 @@ export interface AccountOffersResponse {
 export interface AccountOffer {
   seq: number,
   flags: number,
-  taker_gets: RippledAmount,
-  taker_pays: RippledAmount,
+  taker_gets: DivvydAmount,
+  taker_pays: DivvydAmount,
   quality: string,
   expiration?: number
 }

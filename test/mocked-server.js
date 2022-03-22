@@ -3,7 +3,7 @@
 
 const port = 34371;
 
-const createMockRippled = require('./mock-rippled');
+const createMockDivvyd = require('./mock-divvyd');
 
 function main() {
   if (global.describe) {
@@ -11,9 +11,9 @@ function main() {
     return;
   }
   console.log('starting server on port ' + port);
-  createMockRippled(port);
+  createMockDivvyd(port);
   console.log('starting server on port ' + String(port + 1));
-  createMockRippled(port + 1);
+  createMockDivvyd(port + 1);
 }
 
 main();

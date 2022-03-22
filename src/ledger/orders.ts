@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import {validate} from '../common'
 import parseAccountOrder from './parse/account-order'
 import {Order} from './types'
-import {RippleAPI} from '../api'
+import {DivvyAPI} from '../api'
 import {AccountOffersResponse} from '../common/types/commands/account_offers'
 
 export type GetOrdersOptions = {
@@ -24,7 +24,7 @@ function formatResponse(
 }
 
 export default async function getOrders(
-  this: RippleAPI, address: string, options: GetOrdersOptions = {}
+  this: DivvyAPI, address: string, options: GetOrdersOptions = {}
 ): Promise<Order[]> {
   // 1. Validate
   validate.getOrders({address, options})

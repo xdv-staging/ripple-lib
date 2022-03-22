@@ -3,7 +3,7 @@ import * as common from '../common'
 import {Memo} from '../common/types/objects'
 const txFlags = common.txFlags
 import {Instructions, Prepare} from './types'
-import {RippleAPI} from '../api'
+import {DivvyAPI} from '../api'
 
 export type ApiMemo = {
   MemoData?: string,
@@ -13,7 +13,7 @@ export type ApiMemo = {
 
 function formatPrepareResponse(txJSON: any): Prepare {
   const instructions = {
-    fee: common.dropsToXrp(txJSON.Fee),
+    fee: common.dropsToXdv(txJSON.Fee),
     sequence: txJSON.Sequence,
     maxLedgerVersion: txJSON.LastLedgerSequence === undefined ?
       null : txJSON.LastLedgerSequence
@@ -36,7 +36,7 @@ function scaleValue(value, multiplier, extra = 0) {
   return (new BigNumber(value)).times(multiplier).plus(extra).toString()
 }
 
-function prepareTransaction(txJSON: any, api: RippleAPI,
+function prepareTransaction(txJSON: any, api: DivvyAPI,
   instructions: Instructions
 ): Promise<Prepare> {
   common.validate.instructions(instructions)
@@ -63,7 +63,7 @@ function prepareTransaction(txJSON: any, api: RippleAPI,
     const multiplier = instructions.signersCount === undefined ? 1 :
       instructions.signersCount + 1
     if (instructions.fee !== undefined) {
-      txJSON.Fee = scaleValue(common.xrpToDrops(instructions.fee), multiplier)
+      txJSON.Fee = scaleValue(common.xdvToDrops(instructions.fee), multiplier)
       return Promise.resolve(txJSON)
     }
     const cushion = api._feeCushion
@@ -74,9 +74,9 @@ function prepareTransaction(txJSON: any, api: RippleAPI,
             txJSON.Fulfillment === undefined) ? 0 :
             (cushion * feeRef * (32 + Math.floor(
               new Buffer(txJSON.Fulfillment, 'hex').length / 16)))
-        const feeDrops = common.xrpToDrops(fee)
+        const feeDrops = common.xdvToDrops(fee)
         if (instructions.maxFee !== undefined) {
-          const maxFeeDrops = common.xrpToDrops(instructions.maxFee)
+          const maxFeeDrops = common.xdvToDrops(instructions.maxFee)
           const normalFee = scaleValue(feeDrops, multiplier, extraFee)
           txJSON.Fee = BigNumber.min(normalFee, maxFeeDrops).toString()
         } else {

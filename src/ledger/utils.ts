@@ -17,7 +17,7 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max)
 }
 
-function getXRPBalance(connection: Connection, address: string,
+function getXDVBalance(connection: Connection, address: string,
   ledgerVersion?: number
 ): Promise<string> {
   const request = {
@@ -26,7 +26,7 @@ function getXRPBalance(connection: Connection, address: string,
     ledger_index: ledgerVersion
   }
   return connection.request(request).then(data =>
-    common.dropsToXrp(data.account_data.Balance))
+    common.dropsToXdv(data.account_data.Balance))
 }
 
 // If the marker is omitted from a response, you have reached the end
@@ -73,10 +73,10 @@ function signum(num) {
 }
 
 /**
- *  Order two rippled transactions based on their ledger_index.
+ *  Order two divvyd transactions based on their ledger_index.
  *  If two transactions took place in the same ledger, sort
  *  them based on TransactionIndex
- *  See: https://ripple.com/build/transactions/
+ *  See: https://divvy.com/build/transactions/
  */
 function compareTransactions(first: TransactionType, second: TransactionType
 ): number {
@@ -116,7 +116,7 @@ function ensureLedgerVersion(options: any
 }
 
 export {
-  getXRPBalance,
+  getXDVBalance,
   ensureLedgerVersion,
   compareTransactions,
   renameCounterpartyToIssuer,

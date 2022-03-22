@@ -16,7 +16,7 @@
           },
           "ripplingDisabled": {
             "type": "boolean",
-            "description": "If true, payments cannot ripple through this trustline."
+            "description": "If true, payments cannot divvy through this trustline."
           },
           "frozen": {
             "type": "boolean",

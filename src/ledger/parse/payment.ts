@@ -4,8 +4,8 @@ import * as utils from './utils'
 import {txFlags, removeUndefined} from '../../common'
 import parseAmount from './amount'
 
-function isNoDirectRipple(tx) {
-  return (tx.Flags & txFlags.Payment.NoRippleDirect) !== 0
+function isNoDirectDivvy(tx) {
+  return (tx.Flags & txFlags.Payment.NoDivvyDirect) !== 0
 }
 
 function isQualityLimited(tx) {
@@ -40,7 +40,7 @@ function parsePayment(tx: any): Object {
     invoiceID: tx.InvoiceID,
     paths: tx.Paths ? JSON.stringify(tx.Paths) : undefined,
     allowPartialPayment: utils.isPartialPayment(tx) || undefined,
-    noDirectRipple: isNoDirectRipple(tx) || undefined,
+    noDirectDivvy: isNoDirectDivvy(tx) || undefined,
     limitQuality: isQualityLimited(tx) || undefined
   })
 }

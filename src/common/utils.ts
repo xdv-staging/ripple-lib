@@ -1,8 +1,8 @@
 import * as _ from 'lodash'
 import BigNumber from 'bignumber.js'
-const {deriveKeypair} = require('ripple-keypairs')
+const {deriveKeypair} = require('divvy-keypairs')
 
-import {Amount, RippledAmount} from './types/objects'
+import {Amount, DivvydAmount} from './types/objects'
 
 function isValidSecret(secret: string): boolean {
   try {
@@ -13,17 +13,17 @@ function isValidSecret(secret: string): boolean {
   }
 }
 
-function dropsToXrp(drops: string): string {
+function dropsToXdv(drops: string): string {
   return (new BigNumber(drops)).dividedBy(1000000.0).toString()
 }
 
-function xrpToDrops(xrp: string): string {
-  return (new BigNumber(xrp)).times(1000000.0).floor().toString()
+function xdvToDrops(xdv: string): string {
+  return (new BigNumber(xdv)).times(1000000.0).floor().toString()
 }
 
-function toRippledAmount(amount: Amount): RippledAmount {
-  if (amount.currency === 'XRP') {
-    return xrpToDrops(amount.value)
+function toDivvydAmount(amount: Amount): DivvydAmount {
+  if (amount.currency === 'XDV') {
+    return xdvToDrops(amount.value)
   }
   return {
     currency: amount.currency,
@@ -59,34 +59,34 @@ function removeUndefined<T extends object>(obj: T): T {
  * @return {Number} ms since unix epoch
  *
  */
-function rippleToUnixTimestamp(rpepoch: number): number {
+function divvyToUnixTimestamp(rpepoch: number): number {
   return (rpepoch + 0x386D4380) * 1000
 }
 
 /**
  * @param {Number|Date} timestamp (ms since unix epoch)
- * @return {Number} seconds since ripple epoch ( 1/1/2000 GMT)
+ * @return {Number} seconds since divvy epoch ( 1/1/2000 GMT)
  */
-function unixToRippleTimestamp(timestamp: number): number {
+function unixToDivvyTimestamp(timestamp: number): number {
   return Math.round(timestamp / 1000) - 0x386D4380
 }
 
-function rippleTimeToISO8601(rippleTime: number): string {
-  return new Date(rippleToUnixTimestamp(rippleTime)).toISOString()
+function divvyTimeToISO8601(divvyTime: number): string {
+  return new Date(divvyToUnixTimestamp(divvyTime)).toISOString()
 }
 
-function iso8601ToRippleTime(iso8601: string): number {
-  return unixToRippleTimestamp(Date.parse(iso8601))
+function iso8601ToDivvyTime(iso8601: string): number {
+  return unixToDivvyTimestamp(Date.parse(iso8601))
 }
 
 export {
-  dropsToXrp,
-  xrpToDrops,
-  toRippledAmount,
+  dropsToXdv,
+  xdvToDrops,
+  toDivvydAmount,
   convertKeysFromSnakeCaseToCamelCase,
   removeUndefined,
-  rippleTimeToISO8601,
-  iso8601ToRippleTime,
+  divvyTimeToISO8601,
+  iso8601ToDivvyTime,
   isValidSecret
 }
 

@@ -10,8 +10,8 @@ const trustlineFlags = {
   HighReserve: 0x00020000,
   LowAuth: 0x00040000,
   HighAuth: 0x00080000,
-  LowNoRipple: 0x00100000,
-  HighNoRipple: 0x00200000,
+  LowNoDivvy: 0x00100000,
+  HighNoDivvy: 0x00200000,
   LowFreeze: 0x00400000,
   HighFreeze: 0x00800000
 }

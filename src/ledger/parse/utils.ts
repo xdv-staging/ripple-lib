@@ -1,18 +1,18 @@
 import * as _ from 'lodash'
-import transactionParser = require('ripple-lib-transactionparser')
+import transactionParser = require('divvy-lib-transactionparser')
 import BigNumber from 'bignumber.js'
 import * as common from '../../common'
 import parseAmount from './amount'
 
 import {Amount, Memo} from '../../common/types/objects'
 
-function adjustQualityForXRP(
+function adjustQualityForXDV(
   quality: string, takerGetsCurrency: string, takerPaysCurrency: string
 ) {
   // quality = takerPays.value/takerGets.value
-  // using drops (1e-6 XRP) for XRP values
-  const numeratorShift = (takerPaysCurrency === 'XRP' ? -6 : 0)
-  const denominatorShift = (takerGetsCurrency === 'XRP' ? -6 : 0)
+  // using drops (1e-6 XDV) for XDV values
+  const numeratorShift = (takerPaysCurrency === 'XDV' ? -6 : 0)
+  const denominatorShift = (takerGetsCurrency === 'XDV' ? -6 : 0)
   const shift = numeratorShift - denominatorShift
   return shift === 0 ? quality :
     (new BigNumber(quality)).shift(shift).toString()
@@ -25,11 +25,11 @@ function parseQuality(quality?: number|null): number|undefined {
   return (new BigNumber(quality)).shift(-9).toNumber()
 }
 
-function parseTimestamp(rippleTime?: number|null): string|undefined {
-  if (typeof rippleTime !== 'number') {
+function parseTimestamp(divvyTime?: number|null): string|undefined {
+  if (typeof divvyTime !== 'number') {
     return undefined
   }
-  return common.rippleTimeToISO8601(rippleTime)
+  return common.divvyTimeToISO8601(divvyTime)
 }
 
 function removeEmptyCounterparty(amount) {
@@ -109,7 +109,7 @@ function parseOutcome(tx: any): any|undefined {
   return common.removeUndefined({
     result: tx.meta.TransactionResult,
     timestamp: parseTimestamp(tx.date),
-    fee: common.dropsToXrp(tx.Fee),
+    fee: common.dropsToXdv(tx.Fee),
     balanceChanges: balanceChanges,
     orderbookChanges: orderbookChanges,
     ledgerVersion: tx.ledger_index,
@@ -141,6 +141,6 @@ export {
   parseMemos,
   hexToString,
   parseTimestamp,
-  adjustQualityForXRP,
+  adjustQualityForXDV,
   isPartialPayment
 }

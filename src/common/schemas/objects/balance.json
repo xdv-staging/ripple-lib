@@ -14,7 +14,7 @@
       "$ref": "currency"
     },
     "counterparty": {
-      "description": "The Ripple address of the account that owes or is owed the funds.",
+      "description": "The Divvy address of the account that owes or is owed the funds.",
       "$ref": "address"
     }
   },
@@ -25,7 +25,7 @@
       "properties": {
         "currency": {
           "not": {
-            "enum": ["XRP"]
+            "enum": ["XDV"]
           }
         }
       },
@@ -34,7 +34,7 @@
     {
       "properties": {
         "currency": {
-          "enum": ["XRP"]
+          "enum": ["XDV"]
         }
       },
       "not": {

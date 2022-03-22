@@ -9,7 +9,7 @@ function getUserHomePath() {
 }
 
 function loadWallet() {
-  const secretPath = path.join(getUserHomePath(), '.ripple_wallet');
+  const secretPath = path.join(getUserHomePath(), '.divvy_wallet');
   try {
     const walletRaw = fs.readFileSync(secretPath, {encoding: 'utf8'}).trim();
     return JSON.parse(walletRaw);
@@ -30,7 +30,7 @@ function getTestKey(key) {
     }
   }
   if (WALLET === null) {
-    throw new Error('Could not find .ripple_wallet file in home directory');
+    throw new Error('Could not find .divvy_wallet file in home directory');
   }
   if (WALLET.test === undefined) {
     throw new Error('Wallet does not contain a "test" account');

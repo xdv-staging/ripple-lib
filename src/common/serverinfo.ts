@@ -23,10 +23,10 @@ export type GetServerInfoResponse = {
   serverState: string,
   validatedLedger: {
     age: number,
-    baseFeeXRP: string,
+    baseFeeXDV: string,
     hash: string,
-    reserveBaseXRP: string,
-    reserveIncrementXRP: string,
+    reserveBaseXDV: string,
+    reserveIncrementXDV: string,
     ledgerVersion: number
   },
   validationQuorum: number
@@ -45,17 +45,17 @@ function getServerInfo(connection: Connection): Promise<GetServerInfoResponse> {
     renameKeys(info, {hostid: 'hostID'})
     if (info.validatedLedger) {
       renameKeys(info.validatedLedger, {
-        baseFeeXrp: 'baseFeeXRP',
-        reserveBaseXrp: 'reserveBaseXRP',
-        reserveIncXrp: 'reserveIncrementXRP',
+        baseFeeXdv: 'baseFeeXDV',
+        reserveBaseXdv: 'reserveBaseXDV',
+        reserveIncXdv: 'reserveIncrementXDV',
         seq: 'ledgerVersion'
       })
-      info.validatedLedger.baseFeeXRP =
-        info.validatedLedger.baseFeeXRP.toString()
-      info.validatedLedger.reserveBaseXRP =
-        info.validatedLedger.reserveBaseXRP.toString()
-      info.validatedLedger.reserveIncrementXRP =
-        info.validatedLedger.reserveIncrementXRP.toString()
+      info.validatedLedger.baseFeeXDV =
+        info.validatedLedger.baseFeeXDV.toString()
+      info.validatedLedger.reserveBaseXDV =
+        info.validatedLedger.reserveBaseXDV.toString()
+      info.validatedLedger.reserveIncrementXDV =
+        info.validatedLedger.reserveIncrementXDV.toString()
     }
     return info
   })
@@ -64,7 +64,7 @@ function getServerInfo(connection: Connection): Promise<GetServerInfoResponse> {
 function computeFeeFromServerInfo(cushion: number,
   serverInfo: GetServerInfoResponse
 ): string {
-  return (new BigNumber(serverInfo.validatedLedger.baseFeeXRP)).
+  return (new BigNumber(serverInfo.validatedLedger.baseFeeXDV)).
     times(serverInfo.loadFactor).
     times(cushion).toString()
 }

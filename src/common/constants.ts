@@ -6,11 +6,11 @@ const accountRootFlags = {
   RequireDestTag: 0x00020000, // require a DestinationTag for payments
   RequireAuth: 0x00040000, // require authorization to hold IOUs
   DepositAuth: 0x01000000, // require account to auth deposits
-  DisallowXRP: 0x00080000, // disallow sending XRP
+  DisallowXDV: 0x00080000, // disallow sending XDV
   DisableMaster: 0x00100000, // force regular key
   NoFreeze: 0x00200000, // permanently disallowed freezing trustlines
   GlobalFreeze: 0x00400000, // trustlines globally frozen
-  DefaultRipple: 0x00800000
+  DefaultDivvy: 0x00800000
 }
 
 const AccountFlags = {
@@ -18,23 +18,23 @@ const AccountFlags = {
   requireDestinationTag: accountRootFlags.RequireDestTag,
   requireAuthorization: accountRootFlags.RequireAuth,
   depositAuth: accountRootFlags.DepositAuth,
-  disallowIncomingXRP: accountRootFlags.DisallowXRP,
+  disallowIncomingXDV: accountRootFlags.DisallowXDV,
   disableMasterKey: accountRootFlags.DisableMaster,
   noFreeze: accountRootFlags.NoFreeze,
   globalFreeze: accountRootFlags.GlobalFreeze,
-  defaultRipple: accountRootFlags.DefaultRipple
+  defaultDivvy: accountRootFlags.DefaultDivvy
 }
 
 const AccountFlagIndices = {
   requireDestinationTag: txFlagIndices.AccountSet.asfRequireDest,
   requireAuthorization: txFlagIndices.AccountSet.asfRequireAuth,
   depositAuth: txFlagIndices.AccountSet.asfDepositAuth,
-  disallowIncomingXRP: txFlagIndices.AccountSet.asfDisallowXRP,
+  disallowIncomingXDV: txFlagIndices.AccountSet.asfDisallowXDV,
   disableMasterKey: txFlagIndices.AccountSet.asfDisableMaster,
   enableTransactionIDTracking: txFlagIndices.AccountSet.asfAccountTxnID,
   noFreeze: txFlagIndices.AccountSet.asfNoFreeze,
   globalFreeze: txFlagIndices.AccountSet.asfGlobalFreeze,
-  defaultRipple: txFlagIndices.AccountSet.asfDefaultRipple
+  defaultDivvy: txFlagIndices.AccountSet.asfDefaultDivvy
 }
 
 const AccountFields = {

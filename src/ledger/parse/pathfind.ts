@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import parseAmount from './amount'
-import {Amount, RippledAmount} from '../../common/types/objects'
-import {Path, GetPaths, RippledPathsResponse} from '../pathfind-types'
+import {Amount, DivvydAmount} from '../../common/types/objects'
+import {Path, GetPaths, DivvydPathsResponse} from '../pathfind-types'
 
 function parsePaths(paths) {
   return paths.map(steps => steps.map(step =>
@@ -22,7 +22,7 @@ function createAdjustment(
 }
 
 function parseAlternative(sourceAddress: string, destinationAddress: string,
-  destinationAmount: RippledAmount, alternative: any
+  destinationAmount: DivvydAmount, alternative: any
 ): Path {
   // we use "maxAmount"/"minAmount" here so that the result can be passed
   // directly to preparePayment
@@ -39,7 +39,7 @@ function parseAlternative(sourceAddress: string, destinationAddress: string,
   }
 }
 
-function parsePathfind(pathfindResult: RippledPathsResponse): GetPaths {
+function parsePathfind(pathfindResult: DivvydPathsResponse): GetPaths {
   const sourceAddress = pathfindResult.source_account
   const destinationAddress = pathfindResult.destination_account
   const destinationAmount = pathfindResult.destination_amount

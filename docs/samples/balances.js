@@ -1,7 +1,7 @@
 'use strict';
-const RippleAPI = require('../../src').RippleAPI; // require('ripple-lib')
+const DivvyAPI = require('../../src').DivvyAPI; // require('divvy-lib')
 
-const api = new RippleAPI({server: 'wss://s1.ripple.com:443'});
+const api = new DivvyAPI({server: 'wss://s1.divvy.com:443'});
 const address = 'r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV';
 
 api.connect().then(() => {

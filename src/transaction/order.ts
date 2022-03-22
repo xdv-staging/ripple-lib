@@ -1,14 +1,14 @@
 import * as _ from 'lodash'
 import * as utils from './utils'
 const offerFlags = utils.common.txFlags.OfferCreate
-import {validate, iso8601ToRippleTime} from '../common'
+import {validate, iso8601ToDivvyTime} from '../common'
 import {Instructions, Prepare} from './types'
 import {Order} from '../ledger/transaction-types'
 
 function createOrderTransaction(account: string, order: Order): Object {
-  const takerPays = utils.common.toRippledAmount(order.direction === 'buy' ?
+  const takerPays = utils.common.toDivvydAmount(order.direction === 'buy' ?
     order.quantity : order.totalPrice)
-  const takerGets = utils.common.toRippledAmount(order.direction === 'buy' ?
+  const takerGets = utils.common.toDivvydAmount(order.direction === 'buy' ?
     order.totalPrice : order.quantity)
 
   const txJSON: any = {
@@ -31,7 +31,7 @@ function createOrderTransaction(account: string, order: Order): Object {
     txJSON.Flags |= offerFlags.FillOrKill
   }
   if (order.expirationTime !== undefined) {
-    txJSON.Expiration = iso8601ToRippleTime(order.expirationTime)
+    txJSON.Expiration = iso8601ToDivvyTime(order.expirationTime)
   }
   if (order.orderToReplace !== undefined) {
     txJSON.OfferSequence = order.orderToReplace

@@ -5,9 +5,9 @@ const _ = require('lodash');
 const net = require('net');
 const assert = require('assert-diff');
 const setupAPI = require('./setup-api');
-const RippleAPI = require('ripple-api').RippleAPI;
-const utils = RippleAPI._PRIVATE.ledgerUtils;
-const ledgerClose = require('./fixtures/rippled/ledger-close.json');
+const DivvyAPI = require('divvy-api').DivvyAPI;
+const utils = DivvyAPI._PRIVATE.ledgerUtils;
+const ledgerClose = require('./fixtures/divvyd/ledger-close.json');
 
 
 const TIMEOUT = 200000;   // how long before each test case times out
@@ -120,7 +120,7 @@ describe('Connection', function() {
 
     // Address where no one listens
     const connection =
-      new utils.common.Connection('ws://testripple.circleci.com:129');
+      new utils.common.Connection('ws://testdivvy.circleci.com:129');
     connection.on('error', done);
     connection.connect().catch(error => {
       assert(error instanceof this.api.errors.NotConnectedError);
@@ -225,7 +225,7 @@ describe('Connection', function() {
       }
       this.timeout(70001);
       const self = this;
-      self.api.connection.__badUrl = 'ws://testripple.circleci.com:129';
+      self.api.connection.__badUrl = 'ws://testdivvy.circleci.com:129';
       function breakConnection() {
         self.api.connection.__doReturnBad();
         self.api.connection._send(JSON.stringify({
@@ -328,9 +328,9 @@ describe('Connection', function() {
       servers: ['wss://server1.com', 'wss://server2.com']
     };
     assert.throws(function() {
-      const api = new RippleAPI(options);
+      const api = new DivvyAPI(options);
       unused(api);
-    }, this.api.errors.RippleError);
+    }, this.api.errors.DivvyError);
   });
 
   it('connect throws error', function(done) {
@@ -413,7 +413,7 @@ describe('Connection', function() {
     this.api.connection._ws.emit('message', JSON.stringify(message));
   });
 
-  it('should throw RippledNotInitializedError if server does not have ' +
+  it('should throw DivvydNotInitializedError if server does not have ' +
   'validated ledgers',
   function() {
     this.timeout(3000);
@@ -423,12 +423,12 @@ describe('Connection', function() {
       data: {returnEmptySubscribeRequest: 1}
     }));
 
-    const api = new RippleAPI({server: this.api.connection._url});
+    const api = new DivvyAPI({server: this.api.connection._url});
     return api.connect().then(() => {
       assert(false, 'Must have thrown!');
     }, error => {
-      assert(error instanceof this.api.errors.RippledNotInitializedError,
-        'Must throw RippledNotInitializedError, got instead ' + String(error));
+      assert(error instanceof this.api.errors.DivvydNotInitializedError,
+        'Must throw DivvydNotInitializedError, got instead ' + String(error));
     });
   });
 

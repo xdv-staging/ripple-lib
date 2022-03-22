@@ -1,7 +1,7 @@
 import * as utils from './utils'
-import keypairs = require('ripple-keypairs')
-import binary = require('ripple-binary-codec')
-import {computeBinaryTransactionHash} from 'ripple-hashes'
+import keypairs = require('divvy-keypairs')
+import binary = require('divvy-binary-codec')
+import {computeBinaryTransactionHash} from 'divvy-hashes'
 const validate = utils.common.validate
 
 function computeSignature(tx: Object, privateKey: string, signAs?: string) {

@@ -1,12 +1,12 @@
 import * as common from '../../common'
-import {Amount, RippledAmount} from '../../common/types/objects'
+import {Amount, DivvydAmount} from '../../common/types/objects'
 
 
-function parseAmount(amount: RippledAmount): Amount {
+function parseAmount(amount: DivvydAmount): Amount {
   if (typeof amount === 'string') {
     return {
-      currency: 'XRP',
-      value: common.dropsToXrp(amount)
+      currency: 'XDV',
+      value: common.dropsToXdv(amount)
     }
   }
   return {

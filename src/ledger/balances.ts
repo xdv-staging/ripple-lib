@@ -24,13 +24,13 @@ function getTrustlineBalanceAmount(trustline: FormattedTrustline) {
 function formatBalances(options, balances) {
   const result = balances.trustlines.map(getTrustlineBalanceAmount)
   if (!(options.counterparty ||
-       (options.currency && options.currency !== 'XRP')
+       (options.currency && options.currency !== 'XDV')
   )) {
-    const xrpBalance = {
-      currency: 'XRP',
-      value: balances.xrp
+    const xdvBalance = {
+      currency: 'XDV',
+      value: balances.xdv
     }
-    result.unshift(xrpBalance)
+    result.unshift(xdvBalance)
   }
   if (options.limit && result.length > options.limit) {
     const toRemove = result.length - options.limit
@@ -54,10 +54,10 @@ function getBalances(address: string, options: GetTrustlinesOptions = {}
   return Promise.all([
     getLedgerVersionHelper(this.connection, options.ledgerVersion).then(
       ledgerVersion =>
-        utils.getXRPBalance(this.connection, address, ledgerVersion)),
+        utils.getXDVBalance(this.connection, address, ledgerVersion)),
     this.getTrustlines(address, options)
   ]).then(results =>
-    formatBalances(options, {xrp: results[0], trustlines: results[1]}))
+    formatBalances(options, {xdv: results[0], trustlines: results[1]}))
 }
 
 export default getBalances

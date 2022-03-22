@@ -1,16 +1,16 @@
 
 import * as _ from 'lodash'
-import {RippleAPI} from './api'
+import {DivvyAPI} from './api'
 
-class RippleAPIBroadcast extends RippleAPI {
+class DivvyAPIBroadcast extends DivvyAPI {
 
   ledgerVersion: number | undefined = undefined
-  private _apis: RippleAPI[]
+  private _apis: DivvyAPI[]
 
   constructor(servers, options) {
     super(options)
 
-    const apis: RippleAPI[] = servers.map(server => new RippleAPI(
+    const apis: DivvyAPI[] = servers.map(server => new DivvyAPI(
       _.assign({}, options, {server})
     ))
 
@@ -58,9 +58,9 @@ class RippleAPIBroadcast extends RippleAPI {
 
   getMethodNames() {
     const methodNames: string[] = []
-    const rippleAPI = this._apis[0]
-    for (const name of Object.getOwnPropertyNames(rippleAPI)) {
-      if (typeof rippleAPI[name] === 'function') {
+    const divvyAPI = this._apis[0]
+    for (const name of Object.getOwnPropertyNames(divvyAPI)) {
+      if (typeof divvyAPI[name] === 'function') {
         methodNames.push(name)
       }
     }
@@ -69,5 +69,5 @@ class RippleAPIBroadcast extends RippleAPI {
 }
 
 export {
-  RippleAPIBroadcast
+  DivvyAPIBroadcast
 }

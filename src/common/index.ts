@@ -10,13 +10,13 @@ export {
 }
 
 export {
-  dropsToXrp,
-  xrpToDrops,
-  toRippledAmount,
+  dropsToXdv,
+  xdvToDrops,
+  toDivvydAmount,
   removeUndefined,
   convertKeysFromSnakeCaseToCamelCase,
-  iso8601ToRippleTime,
-  rippleTimeToISO8601
+  iso8601ToDivvyTime,
+  divvyTimeToISO8601
 } from './utils'
 export {default as Connection} from './connection'
 export {txFlags} from './txflags'

@@ -1,5 +1,5 @@
 
 
-export {RippleAPI} from './api'
+export {DivvyAPI} from './api'
 // Broadcast api is experimental
-export {RippleAPIBroadcast} from './broadcast'
+export {DivvyAPIBroadcast} from './broadcast'

@@ -11,13 +11,13 @@ module.exports = {
   getBalanceSheet: require('./get-balance-sheet.json'),
   getOrderbook: {
     normal: require('./get-orderbook.json'),
-    withXRP: require('./get-orderbook-with-xrp.json')
+    withXDV: require('./get-orderbook-with-xdv.json')
   },
   getOrders: require('./get-orders.json'),
   getPaths: {
-    XrpToUsd: require('./get-paths.json'),
+    XdvToUsd: require('./get-paths.json'),
     UsdToUsd: require('./get-paths-send-usd.json'),
-    XrpToXrp: require('./get-paths-xrp-to-xrp.json'),
+    XdvToXdv: require('./get-paths-xdv-to-xdv.json'),
     sendAll: require('./get-paths-send-all.json')
   },
   getPaymentChannel: {
@@ -97,8 +97,8 @@ module.exports = {
   },
   preparePayment: {
     normal: require('./prepare-payment.json'),
-    minAmountXRP: require('./prepare-payment-min-amount-xrp.json'),
-    minAmountXRPXRP: require('./prepare-payment-min-amount-xrp-xrp.json'),
+    minAmountXDV: require('./prepare-payment-min-amount-xdv.json'),
+    minAmountXDVXDV: require('./prepare-payment-min-amount-xdv-xdv.json'),
     allOptions: require('./prepare-payment-all-options.json'),
     noCounterparty: require('./prepare-payment-no-counterparty.json'),
     minAmount: require('./prepare-payment-min-amount.json')

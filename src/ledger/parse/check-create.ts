@@ -10,13 +10,13 @@ export type FormattedCheckCreate = {
   destination: string,
 
   // amount the check is allowed to debit the sender,
-  // including transfer fees on non-XRP currencies.
+  // including transfer fees on non-XDV currencies.
   sendMax: Amount,
 
   // (Optional) identifies the reason for the check, or a hosted recipient.
   destinationTag?: string,
 
-  // (Optional) time in seconds since the Ripple Epoch.
+  // (Optional) time in seconds since the Divvy Epoch.
   expiration?: string,
 
   // (Optional) 256-bit hash representing a specific reason or identifier.

@@ -6,7 +6,7 @@
   "properties": {
     "result": {
       "type": "string",
-      "description": "Result code returned by rippled. See [Transaction Results](https://ripple.com/build/transactions/#full-transaction-response-list) for a complete list."
+      "description": "Result code returned by divvyd. See [Transaction Results](https://divvy.com/build/transactions/#full-transaction-response-list) for a complete list."
     },
     "timestamp": {
       "type": "string",
@@ -15,7 +15,7 @@
     },
     "fee": {
       "$ref": "value",
-      "description": "The XRP fee that was charged for the transaction."
+      "description": "The XDV fee that was charged for the transaction."
     },
     "deliveredAmount": {
       "$ref": "amount",
@@ -25,7 +25,7 @@
       "type": "object",
       "additionalProperties": {
         "type": "array",
-        "description": "Key is the ripple address; value is an array of signed amounts representing changes of balances for that address.",
+        "description": "Key is the divvy address; value is an array of signed amounts representing changes of balances for that address.",
         "items": {"$ref": "balance"}
       }
     },
@@ -33,7 +33,7 @@
       "type": "object",
       "additionalProperties": {
         "type": "array",
-        "description": "Key is the maker's ripple address; value is an array of changes",
+        "description": "Key is the maker's divvy address; value is an array of changes",
         "items": {"$ref": "orderChange"}
       }
     },

@@ -4,7 +4,7 @@ import parseOrderbookOrder from './parse/orderbook-order'
 import {validate} from '../common'
 import {OrderSpecification} from './types'
 import {Amount, Issue} from '../common/types/objects'
-import {RippleAPI} from '../api'
+import {DivvyAPI} from '../api'
 import {OfferCreateTransaction} from '../common/types/objects'
 
 export type OrdersOptions = {
@@ -83,7 +83,7 @@ function formatBidsAndAsks(
 // account is to specify a "perspective", which affects which unfunded offers
 // are returned
 async function makeRequest(
-  api: RippleAPI, taker: string, options: OrdersOptions,
+  api: DivvyAPI, taker: string, options: OrdersOptions,
   takerGets: Issue, takerPays: Issue
 ) {
   const orderData = utils.renameCounterpartyToIssuerInOrder({
@@ -100,7 +100,7 @@ async function makeRequest(
 }
 
 export default async function getOrderbook(
-  this: RippleAPI,
+  this: DivvyAPI,
   address: string,
   orderbook: Orderbook,
   options: OrdersOptions = {}

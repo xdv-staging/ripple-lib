@@ -1,6 +1,6 @@
-import keypairs = require('ripple-keypairs')
-import binary = require('ripple-binary-codec')
-import {validate, xrpToDrops} from '../common'
+import keypairs = require('divvy-keypairs')
+import binary = require('divvy-binary-codec')
+import {validate, xdvToDrops} from '../common'
 
 function verifyPaymentChannelClaim(channel: string, amount: string,
   signature: string, publicKey: string
@@ -9,7 +9,7 @@ function verifyPaymentChannelClaim(channel: string, amount: string,
 
   const signingData = binary.encodeForSigningClaim({
     channel: channel,
-    amount: xrpToDrops(amount)
+    amount: xdvToDrops(amount)
   })
   return keypairs.verify(signingData, signature, publicKey)
 }

@@ -1,6 +1,6 @@
 To run integration tests:
 1. Replace 'describe.skip' with 'describe' in test/integration/integration-test.js
-2. Create a file at ~/.ripple_wallet containing a JSON object like this with
+2. Create a file at ~/.divvy_wallet containing a JSON object like this with
    your own test address and secret.
     {
       "test": {

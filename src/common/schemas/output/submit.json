@@ -5,7 +5,7 @@
   "properties": {
     "resultCode": {
       "type": "string",
-      "description": "The result code returned by rippled. [List of transaction responses](https://ripple.com/build/transactions/#full-transaction-response-list)"
+      "description": "The result code returned by divvyd. [List of transaction responses](https://divvy.com/build/transactions/#full-transaction-response-list)"
     },
     "resultMessage": {
       "type": "string",

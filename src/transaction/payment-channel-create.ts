@@ -1,5 +1,5 @@
 import * as utils from './utils'
-import {validate, iso8601ToRippleTime, xrpToDrops} from '../common'
+import {validate, iso8601ToDivvyTime, xdvToDrops} from '../common'
 import {Instructions, Prepare} from './types'
 
 export type PaymentChannelCreate = {
@@ -18,14 +18,14 @@ function createPaymentChannelCreateTransaction(account: string,
   const txJSON: any = {
     Account: account,
     TransactionType: 'PaymentChannelCreate',
-    Amount: xrpToDrops(paymentChannel.amount),
+    Amount: xdvToDrops(paymentChannel.amount),
     Destination: paymentChannel.destination,
     SettleDelay: paymentChannel.settleDelay,
     PublicKey: paymentChannel.publicKey.toUpperCase()
   }
 
   if (paymentChannel.cancelAfter !== undefined) {
-    txJSON.CancelAfter = iso8601ToRippleTime(paymentChannel.cancelAfter)
+    txJSON.CancelAfter = iso8601ToDivvyTime(paymentChannel.cancelAfter)
   }
   if (paymentChannel.sourceTag !== undefined) {
     txJSON.SourceTag = paymentChannel.sourceTag

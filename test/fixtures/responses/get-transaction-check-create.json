@@ -6,7 +6,7 @@
   "specification": {
     "destination": "raLHvSZXacoGiCoWrdBhVGstZm6GhF7oRr",
     "sendMax": {
-      "currency": "XRP",
+      "currency": "XDV",
       "value": "3"
     },
     "destinationTag": 1235,
@@ -20,7 +20,7 @@
     "balanceChanges": {
       "rNpdNFXNMvEcaXDqMypi48gdSABZkYuyQE": [
         {
-          "currency": "XRP",
+          "currency": "XDV",
           "value": "-0.000012"
         }
       ]

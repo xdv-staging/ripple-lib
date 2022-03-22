@@ -1,4 +1,4 @@
-import keypairs = require('ripple-keypairs')
+import keypairs = require('divvy-keypairs')
 import * as common from '../common'
 const {errors, validate} = common
 

@@ -1,5 +1,5 @@
-import {validate, removeUndefined, dropsToXrp} from '../common'
-import {RippleAPI} from '../api'
+import {validate, removeUndefined, dropsToXdv} from '../common'
+import {DivvyAPI} from '../api'
 import {AccountInfoResponse} from '../common/types/commands/account_info'
 
 export type GetAccountInfoOptions = {
@@ -8,7 +8,7 @@ export type GetAccountInfoOptions = {
 
 export type FormattedGetAccountInfoResponse = {
   sequence: number,
-  xrpBalance: string,
+  xdvBalance: string,
   ownerCount: number,
   previousInitiatedTransactionID: string,
   previousAffectingTransactionID: string,
@@ -21,7 +21,7 @@ function formatAccountInfo(
   const data = response.account_data
   return removeUndefined({
     sequence: data.Sequence,
-    xrpBalance: dropsToXrp(data.Balance),
+    xdvBalance: dropsToXdv(data.Balance),
     ownerCount: data.OwnerCount,
     previousInitiatedTransactionID: data.AccountTxnID,
     previousAffectingTransactionID: data.PreviousTxnID,
@@ -30,7 +30,7 @@ function formatAccountInfo(
 }
 
 export default async function getAccountInfo(
-  this: RippleAPI, address: string, options: GetAccountInfoOptions = {}
+  this: DivvyAPI, address: string, options: GetAccountInfoOptions = {}
 ): Promise<FormattedGetAccountInfoResponse> {
   // 1. Validate
   validate.getAccountInfo({address, options})

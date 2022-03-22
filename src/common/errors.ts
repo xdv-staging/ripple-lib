@@ -2,7 +2,7 @@
 import {inspect} from 'util'
 import * as browserHacks from './browser-hacks'
 
-class RippleError extends Error {
+class DivvyError extends Error {
 
   name: string
   message: string
@@ -36,39 +36,39 @@ class RippleError extends Error {
   }
 }
 
-class RippledError extends RippleError {}
+class DivvydError extends DivvyError {}
 
-class UnexpectedError extends RippleError {}
+class UnexpectedError extends DivvyError {}
 
-class LedgerVersionError extends RippleError {}
+class LedgerVersionError extends DivvyError {}
 
-class ConnectionError extends RippleError {}
+class ConnectionError extends DivvyError {}
 
 class NotConnectedError extends ConnectionError {}
 
 class DisconnectedError extends ConnectionError {}
 
-class RippledNotInitializedError extends ConnectionError {}
+class DivvydNotInitializedError extends ConnectionError {}
 
 class TimeoutError extends ConnectionError {}
 
 class ResponseFormatError extends ConnectionError {}
 
-class ValidationError extends RippleError {}
+class ValidationError extends DivvyError {}
 
-class NotFoundError extends RippleError {
+class NotFoundError extends DivvyError {
   constructor(message = 'Not found') {
     super(message)
   }
 }
 
-class MissingLedgerHistoryError extends RippleError {
+class MissingLedgerHistoryError extends DivvyError {
   constructor(message?: string) {
     super(message || 'Server is missing ledger history in the specified range')
   }
 }
 
-class PendingLedgerVersionError extends RippleError {
+class PendingLedgerVersionError extends DivvyError {
   constructor(message?: string) {
     super(message || 'maxLedgerVersion is greater than server\'s most recent ' +
       ' validated ledger')
@@ -76,13 +76,13 @@ class PendingLedgerVersionError extends RippleError {
 }
 
 export {
-  RippleError,
+  DivvyError,
   UnexpectedError,
   ConnectionError,
-  RippledError,
+  DivvydError,
   NotConnectedError,
   DisconnectedError,
-  RippledNotInitializedError,
+  DivvydNotInitializedError,
   TimeoutError,
   ResponseFormatError,
   ValidationError,

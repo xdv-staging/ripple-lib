@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const MochaSauce = require('mocha-in-sauce');
 
-const testUrl = 'http://testripple.circleci.com:8080/test/saucerunner.html';
+const testUrl = 'http://testdivvy.circleci.com:8080/test/saucerunner.html';
 
 
 function main() {
@@ -11,7 +11,7 @@ function main() {
 
   // configure
   const config = {
-    name: 'RippleAPI',
+    name: 'DivvyAPI',
     host: 'localhost',
     port: 4445,
     maxDuration: 180000,

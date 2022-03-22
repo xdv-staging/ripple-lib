@@ -1,6 +1,6 @@
 import * as utils from './utils'
 const ValidationError = utils.common.errors.ValidationError
-const toRippledAmount = utils.common.toRippledAmount
+const toDivvydAmount = utils.common.toDivvydAmount
 import {validate} from '../common'
 import {Instructions, Prepare} from './types'
 import {Amount} from '../common/types/objects'
@@ -26,11 +26,11 @@ function createCheckCashTransaction(account: string,
   }
 
   if (checkCash.amount !== undefined) {
-    txJSON.Amount = toRippledAmount(checkCash.amount)
+    txJSON.Amount = toDivvydAmount(checkCash.amount)
   }
 
   if (checkCash.deliverMin !== undefined) {
-    txJSON.DeliverMin = toRippledAmount(checkCash.deliverMin)
+    txJSON.DeliverMin = toDivvydAmount(checkCash.deliverMin)
   }
 
   return txJSON

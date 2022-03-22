@@ -16,7 +16,7 @@ var pkg = require('./package.json');
 
 var uglifyOptions = {
   mangle: {
-    reserved: ['_', 'RippleError', 'RippledError', 'UnexpectedError',
+    reserved: ['_', 'DivvyError', 'DivvydError', 'UnexpectedError',
     'LedgerVersionError', 'ConnectionError', 'NotConnectedError',
     'DisconnectedError', 'TimeoutError', 'ResponseFormatError',
     'ValidationError', 'NotFoundError', 'MissingLedgerHistoryError',
@@ -34,9 +34,9 @@ function getWebpackConfig(extension, overrides) {
     }],
     entry: './src/index.ts',
     output: {
-      library: 'ripple',
+      library: 'divvy',
       path: path.join(__dirname, 'build/'),
-      filename: ['ripple-', extension].join(pkg.version)
+      filename: ['divvy-', extension].join(pkg.version)
     },
     plugins: [
       new webpack.NormalModuleReplacementPlugin(/^ws$/, './wswrapper'),
@@ -74,7 +74,7 @@ function webpackConfigForWebTest(testFileName, path) {
   var configOverrides = {
     externals: [{
       'lodash': '_',
-      'ripple-api': 'ripple',
+      'divvy-api': 'divvy',
       'net': 'null'
     }],
     entry: testFileName,
@@ -111,8 +111,8 @@ function createLink(from, to) {
 
 function createBuildLink(callback) {
   return function(err, res) {
-    createLink('./build/ripple-' + pkg.version + '.js',
-      './build/ripple-latest.js');
+    createLink('./build/divvy-' + pkg.version + '.js',
+      './build/divvy-latest.js');
     callback(err, res);
   };
 }
@@ -125,8 +125,8 @@ gulp.task('build-min', function(callback) {
   const webpackConfig = getWebpackConfig('-min.js');
   webpackConfig.plugins.push(new UglifyJsPlugin({uglifyOptions}));
   webpack(webpackConfig, function() {
-    createLink('./build/ripple-' + pkg.version + '-min.js',
-      './build/ripple-latest-min.js');
+    createLink('./build/divvy-' + pkg.version + '-min.js',
+      './build/divvy-latest-min.js');
     callback();
   });
 });
@@ -165,20 +165,20 @@ gulp.task('build-core', function(callback) {
 });
 
 gulp.task('bower-build', ['build'], function() {
-  return gulp.src(['./build/ripple-', '.js'].join(pkg.version))
-  .pipe(rename('ripple.js'))
+  return gulp.src(['./build/divvy-', '.js'].join(pkg.version))
+  .pipe(rename('divvy.js'))
   .pipe(gulp.dest('./dist/bower'));
 });
 
 gulp.task('bower-build-min', ['build-min'], function() {
-  return gulp.src(['./build/ripple-', '-min.js'].join(pkg.version))
-  .pipe(rename('ripple-min.js'))
+  return gulp.src(['./build/divvy-', '-min.js'].join(pkg.version))
+  .pipe(rename('divvy-min.js'))
   .pipe(gulp.dest('./dist/bower'));
 });
 
 gulp.task('bower-build-debug', ['build-debug'], function() {
-  return gulp.src(['./build/ripple-', '-debug.js'].join(pkg.version))
-  .pipe(rename('ripple-debug.js'))
+  return gulp.src(['./build/divvy-', '-debug.js'].join(pkg.version))
+  .pipe(rename('divvy-debug.js'))
   .pipe(gulp.dest('./dist/bower'));
 });
 

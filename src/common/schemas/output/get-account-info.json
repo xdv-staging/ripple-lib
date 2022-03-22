@@ -7,9 +7,9 @@
       "$ref": "sequence",
       "description": "The next (smallest unused) sequence number for this account."
     },
-    "xrpBalance": {
+    "xdvBalance": {
       "$ref": "value",
-      "description": "The XRP balance owned by the account."
+      "description": "The XDV balance owned by the account."
     },
     "ownerCount": {
       "type": "integer",
@@ -31,7 +31,7 @@
   },
   "required": [
     "sequence",
-    "xrpBalance",
+    "xdvBalance",
     "ownerCount",
     "previousAffectingTransactionID",
     "previousAffectingTransactionLedgerVersion"

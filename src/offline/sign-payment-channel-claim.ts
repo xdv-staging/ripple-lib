@@ -1,7 +1,7 @@
 import * as common from '../common'
-import keypairs = require('ripple-keypairs')
-import binary = require('ripple-binary-codec')
-const {validate, xrpToDrops} = common
+import keypairs = require('divvy-keypairs')
+import binary = require('divvy-binary-codec')
+const {validate, xdvToDrops} = common
 
 function signPaymentChannelClaim(channel: string, amount: string,
   privateKey: string
@@ -10,7 +10,7 @@ function signPaymentChannelClaim(channel: string, amount: string,
 
   const signingData = binary.encodeForSigningClaim({
     channel: channel,
-    amount: xrpToDrops(amount)
+    amount: xdvToDrops(amount)
   })
   return keypairs.sign(signingData, privateKey)
 }

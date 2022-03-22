@@ -1,5 +1,5 @@
 import {parseTimestamp} from './utils'
-import {removeUndefined, dropsToXrp} from '../../common'
+import {removeUndefined, dropsToXdv} from '../../common'
 
 
 export type PaymentChannel = {
@@ -46,8 +46,8 @@ export type PaymentChannelResponse = {
 function parsePaymentChannel(data: PaymentChannel): PaymentChannelResponse {
   return removeUndefined({
     account: data.Account,
-    amount: dropsToXrp(data.Amount),
-    balance: dropsToXrp(data.Balance),
+    amount: dropsToXdv(data.Amount),
+    balance: dropsToXdv(data.Balance),
     destination: data.Destination,
     publicKey: data.PublicKey,
     settleDelay: data.SettleDelay,

@@ -1,6 +1,6 @@
 import * as utils from './utils'
-const toRippledAmount = utils.common.toRippledAmount
-import {validate, iso8601ToRippleTime} from '../common'
+const toDivvydAmount = utils.common.toDivvydAmount
+import {validate, iso8601ToDivvyTime} from '../common'
 import {Instructions, Prepare} from './types'
 import {Amount} from '../common/types/objects'
 
@@ -19,7 +19,7 @@ function createCheckCreateTransaction(account: string,
     Account: account,
     TransactionType: 'CheckCreate',
     Destination: check.destination,
-    SendMax: toRippledAmount(check.sendMax)
+    SendMax: toDivvydAmount(check.sendMax)
   }
 
   if (check.destinationTag !== undefined) {
@@ -27,7 +27,7 @@ function createCheckCreateTransaction(account: string,
   }
 
   if (check.expiration !== undefined) {
-    txJSON.Expiration = iso8601ToRippleTime(check.expiration)
+    txJSON.Expiration = iso8601ToDivvyTime(check.expiration)
   }
 
   if (check.invoiceID !== undefined) {

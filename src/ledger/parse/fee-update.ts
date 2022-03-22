@@ -1,14 +1,14 @@
 
 import BigNumber from 'bignumber.js'
-import {dropsToXrp} from '../../common'
+import {dropsToXdv} from '../../common'
 
 function parseFeeUpdate(tx: any) {
   const baseFeeDrops = (new BigNumber(tx.BaseFee, 16)).toString()
   return {
-    baseFeeXRP: dropsToXrp(baseFeeDrops),
+    baseFeeXDV: dropsToXdv(baseFeeDrops),
     referenceFeeUnits: tx.ReferenceFeeUnits,
-    reserveBaseXRP: dropsToXrp(tx.ReserveBase),
-    reserveIncrementXRP: dropsToXrp(tx.ReserveIncrement)
+    reserveBaseXDV: dropsToXdv(tx.ReserveBase),
+    reserveIncrementXDV: dropsToXdv(tx.ReserveIncrement)
   }
 }
 

@@ -3,5 +3,5 @@
 module.exports = {
   responses: require('./responses'),
   requests: require('./requests'),
-  rippled: require('./rippled')
+  divvyd: require('./divvyd')
 };

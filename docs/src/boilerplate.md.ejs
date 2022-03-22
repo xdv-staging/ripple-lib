@@ -1,12 +1,12 @@
 ## Boilerplate
 
-Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using RippleAPI.
+Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using DivvyAPI.
 
 ```javascript
-const RippleAPI = require('ripple-lib').RippleAPI;
+const DivvyAPI = require('divvy-lib').DivvyAPI;
 
-const api = new RippleAPI({
-  server: 'wss://s1.ripple.com' // Public rippled server hosted by Ripple, Inc.
+const api = new DivvyAPI({
+  server: 'wss://s1.divvy.com' // Public divvyd server hosted by Divvy, Inc.
 });
 api.on('error', (errorCode, errorMessage) => {
   console.log(errorCode + ': ' + errorMessage);
@@ -26,9 +26,9 @@ api.connect().then(() => {
 }).catch(console.error);
 ```
 
-RippleAPI is designed to work in [Node.js](https://nodejs.org) version **6.11.3**. RippleAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
+DivvyAPI is designed to work in [Node.js](https://nodejs.org) version **6.11.3**. DivvyAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
 
-The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `RippleAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `DivvyAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 <aside class="notice">
 All the code snippets in this documentation assume that you have surrounded them with this boilerplate.
@@ -44,19 +44,19 @@ The "error" event is emitted whenever an error occurs that cannot be associated 
 
 ### Parameters
 
-The RippleAPI constructor optionally takes one argument, an object with the following options:
+The DivvyAPI constructor optionally takes one argument, an object with the following options:
 
 <%- renderSchema('input/api-options.json') %>
 
-If you omit the `server` parameter, RippleAPI operates [offline](#offline-functionality).
+If you omit the `server` parameter, DivvyAPI operates [offline](#offline-functionality).
 
 
 ### Installation ###
 
 1. Install [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com/en/docs/install). Most Linux distros have a package for Node.js; check that it's the version you want.
-2. Use yarn to install RippleAPI:
-      `yarn install ripple-lib`
+2. Use yarn to install DivvyAPI:
+      `yarn install divvy-lib`
 
-After you have installed ripple-lib, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
+After you have installed divvy-lib, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
 
       `node script.js`

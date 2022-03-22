@@ -43,12 +43,12 @@ export type Settings = {
   requireDestinationTag?: boolean,
   requireAuthorization?: boolean,
   depositAuthorization?: boolean,
-  disallowIncomingXRP?: boolean,
+  disallowIncomingXDV?: boolean,
   disableMasterKey?: boolean,
   enableTransactionIDTracking?: boolean,
   noFreeze?: boolean,
   globalFreeze?: boolean,
-  defaultRipple?: boolean,
+  defaultDivvy?: boolean,
   emailHash?: string,
   messageKey?: string,
   domain?: string,
@@ -67,7 +67,7 @@ export type Payment = {
   memos?: Array<Memo>,
   invoiceID?: string,
   allowPartialPayment?: boolean,
-  noDirectRipple?: boolean,
+  noDirectDivvy?: boolean,
   limitQuality?: boolean
 }
 

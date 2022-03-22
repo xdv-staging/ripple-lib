@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-# RippleAPI Reference
+# DivvyAPI Reference
 
 - [Introduction](#introduction)
   - [Boilerplate](#boilerplate)
@@ -83,26 +83,26 @@
 
 # Introduction
 
-RippleAPI is the official client library to the XRP Ledger. Currently, RippleAPI is only available in JavaScript.
-Using RippleAPI, you can:
+DivvyAPI is the official client library to the XDV Ledger. Currently, DivvyAPI is only available in JavaScript.
+Using DivvyAPI, you can:
 
-* [Query transactions from the XRP Ledger history](#gettransaction)
+* [Query transactions from the XDV Ledger history](#gettransaction)
 * [Sign](#sign) transactions securely without connecting to any server
-* [Submit](#submit) transactions to the XRP Ledger, including [Payments](#payment), [Orders](#order), [Settings changes](#settings), and [other types](#transaction-types)
-* [Generate a new XRP Ledger Address](#generateaddress)
+* [Submit](#submit) transactions to the XDV Ledger, including [Payments](#payment), [Orders](#order), [Settings changes](#settings), and [other types](#transaction-types)
+* [Generate a new XDV Ledger Address](#generateaddress)
 * ... and [much more](#api-methods).
 
-RippleAPI only provides access to *validated*, *immutable* transaction data.
+DivvyAPI only provides access to *validated*, *immutable* transaction data.
 
 ## Boilerplate
 
-Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using RippleAPI.
+Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using DivvyAPI.
 
 ```javascript
-const RippleAPI = require('ripple-lib').RippleAPI;
+const DivvyAPI = require('divvy-lib').DivvyAPI;
 
-const api = new RippleAPI({
-  server: 'wss://s1.ripple.com' // Public rippled server hosted by Ripple, Inc.
+const api = new DivvyAPI({
+  server: 'wss://s1.divvy.com' // Public divvyd server hosted by Divvy, Inc.
 });
 api.on('error', (errorCode, errorMessage) => {
   console.log(errorCode + ': ' + errorMessage);
@@ -122,9 +122,9 @@ api.connect().then(() => {
 }).catch(console.error);
 ```
 
-RippleAPI is designed to work in [Node.js](https://nodejs.org) version **6.11.3**. RippleAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
+DivvyAPI is designed to work in [Node.js](https://nodejs.org) version **6.11.3**. DivvyAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
 
-The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `RippleAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `DivvyAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 <aside class="notice">
 All the code snippets in this documentation assume that you have surrounded them with this boilerplate.
@@ -140,49 +140,49 @@ The "error" event is emitted whenever an error occurs that cannot be associated 
 
 ### Parameters
 
-The RippleAPI constructor optionally takes one argument, an object with the following options:
+The DivvyAPI constructor optionally takes one argument, an object with the following options:
 
 Name | Type | Description
 ---- | ---- | -----------
-authorization | string | *Optional* Username and password for HTTP basic authentication to the rippled server in the format **username:password**.
+authorization | string | *Optional* Username and password for HTTP basic authentication to the divvyd server in the format **username:password**.
 certificate | string | *Optional* A string containing the certificate key of the client in PEM format. (Can be an array of certificates).
 feeCushion | number | *Optional* Factor to multiply estimated fee by to provide a cushion in case the required fee rises during submission of a transaction. Defaults to `1.2`.
 key | string | *Optional* A string containing the private key of the client in PEM format. (Can be an array of keys).
 passphrase | string | *Optional* The passphrase for the private key of the client.
-proxy | uri string | *Optional* URI for HTTP/HTTPS proxy to use to connect to the rippled server.
+proxy | uri string | *Optional* URI for HTTP/HTTPS proxy to use to connect to the divvyd server.
 proxyAuthorization | string | *Optional* Username and password for HTTP basic authentication to the proxy in the format **username:password**.
-server | uri string | *Optional* URI for rippled websocket port to connect to. Must start with `wss://` or `ws://`.
+server | uri string | *Optional* URI for divvyd websocket port to connect to. Must start with `wss://` or `ws://`.
 timeout | integer | *Optional* Timeout in milliseconds before considering a request to have failed.
-trace | boolean | *Optional* If true, log rippled requests and responses to stdout.
+trace | boolean | *Optional* If true, log divvyd requests and responses to stdout.
 trustedCertificates | array\<string\> | *Optional* Array of PEM-formatted SSL certificates to trust when connecting to a proxy. This is useful if you want to use a self-signed certificate on the proxy server. Note: Each element must contain a single certificate; concatenated certificates are not valid.
 
-If you omit the `server` parameter, RippleAPI operates [offline](#offline-functionality).
+If you omit the `server` parameter, DivvyAPI operates [offline](#offline-functionality).
 
 
 ### Installation ###
 
 1. Install [Node.js](https://nodejs.org) and [Yarn](https://yarnpkg.com/en/docs/install). Most Linux distros have a package for Node.js; check that it's the version you want.
-2. Use yarn to install RippleAPI:
-      `yarn install ripple-lib`
+2. Use yarn to install DivvyAPI:
+      `yarn install divvy-lib`
 
-After you have installed ripple-lib, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
+After you have installed divvy-lib, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
 
       `node script.js`
 
 ## Offline functionality
 
-RippleAPI can also function without internet connectivity. This can be useful in order to generate secrets and sign transactions from a secure, isolated machine.
+DivvyAPI can also function without internet connectivity. This can be useful in order to generate secrets and sign transactions from a secure, isolated machine.
 
-To instantiate RippleAPI in offline mode, use the following boilerplate code:
+To instantiate DivvyAPI in offline mode, use the following boilerplate code:
 
 ```javascript
-const RippleAPI = require('ripple-lib').RippleAPI;
+const DivvyAPI = require('divvy-lib').DivvyAPI;
 
-const api = new RippleAPI();
+const api = new DivvyAPI();
 /* insert code here */
 ```
 
-Methods that depend on the state of the XRP Ledger are unavailable in offline mode. To prepare transactions offline, you **must** specify  the `fee`, `sequence`, and `maxLedgerVersion` parameters in the [transaction instructions](#transaction-instructions). You can use the following methods while offline:
+Methods that depend on the state of the XDV Ledger are unavailable in offline mode. To prepare transactions offline, you **must** specify  the `fee`, `sequence`, and `maxLedgerVersion` parameters in the [transaction instructions](#transaction-instructions). You can use the following methods while offline:
 
 * [preparePayment](#preparepayment)
 * [prepareTrustline](#preparetrustline)
@@ -204,22 +204,22 @@ Methods that depend on the state of the XRP Ledger are unavailable in offline mo
 "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59"
 ```
 
-Every XRP Ledger account has an *address*, which is a base58-encoding of a hash of the account's public key. XRP Ledger addresses always start with the lowercase letter `r`.
+Every XDV Ledger account has an *address*, which is a base58-encoding of a hash of the account's public key. XDV Ledger addresses always start with the lowercase letter `r`.
 
 ## Account Sequence Number
 
-Every XRP Ledger account has a *sequence number* that is used to keep transactions in order. Every transaction must have a sequence number. A transaction can only be executed if it has the next sequence number in order, of the account sending it. This prevents one transaction from executing twice and transactions executing out of order. The sequence number starts at `1` and increments for each transaction that the account makes.
+Every XDV Ledger account has a *sequence number* that is used to keep transactions in order. Every transaction must have a sequence number. A transaction can only be executed if it has the next sequence number in order, of the account sending it. This prevents one transaction from executing twice and transactions executing out of order. The sequence number starts at `1` and increments for each transaction that the account makes.
 
 ## Currency
 
-Currencies are represented as either 3-character currency codes or 40-character uppercase hexadecimal strings. We recommend using uppercase [ISO 4217 Currency Codes](http://www.xe.com/iso4217.php) only. The string "XRP" is disallowed on trustlines because it is reserved for the XRP Ledger's native currency. The following characters are permitted: all uppercase and lowercase letters, digits, as well as the symbols `?`, `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `<`, `>`, `(`, `)`, `{`, `}`, `[`, `]`, and `|`.
+Currencies are represented as either 3-character currency codes or 40-character uppercase hexadecimal strings. We recommend using uppercase [ISO 4217 Currency Codes](http://www.xe.com/iso4217.php) only. The string "XDV" is disallowed on trustlines because it is reserved for the XDV Ledger's native currency. The following characters are permitted: all uppercase and lowercase letters, digits, as well as the symbols `?`, `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `<`, `>`, `(`, `)`, `{`, `}`, `[`, `]`, and `|`.
 
 ## Value
-A *value* is a quantity of a currency represented as a decimal string. Be careful: JavaScript's native number format does not have sufficient precision to represent all values. XRP has different precision from other currencies.
+A *value* is a quantity of a currency represented as a decimal string. Be careful: JavaScript's native number format does not have sufficient precision to represent all values. XDV has different precision from other currencies.
 
-**XRP** has 6 significant digits past the decimal point. In other words, XRP cannot be divided into positive values smaller than `0.000001` (1e-6). XRP has a maximum value of `100000000000` (1e11).
+**XDV** has 6 significant digits past the decimal point. In other words, XDV cannot be divided into positive values smaller than `0.000001` (1e-6). XDV has a maximum value of `100000000000` (1e11).
 
-**Non-XRP values** have 16 decimal digits of precision, with a maximum value of `9999999999999999e80`. The smallest positive non-XRP value is `1e-81`.
+**Non-XDV values** have 16 decimal digits of precision, with a maximum value of `9999999999999999e80`. The smallest positive non-XDV value is `1e-81`.
 
 
 ## Amount
@@ -234,15 +234,15 @@ Example amount:
 }
 ```
 
-Example XRP amount:
+Example XDV amount:
 ```json
 {
-  "currency": "XRP",
+  "currency": "XDV",
   "value": "2000"
 }
 ```
 
-An *amount* is data structure representing a currency, a quantity of that currency, and the counterparty on the trustline that holds the value. For XRP, there is no counterparty.
+An *amount* is data structure representing a currency, a quantity of that currency, and the counterparty on the trustline that holds the value. For XDV, there is no counterparty.
 
 A *lax amount* allows the counterparty to be omitted for all currencies. If the counterparty is not specified in an amount within a transaction specification, then any counterparty may be used for that amount.
 
@@ -253,7 +253,7 @@ A *balance* is an amount than can have a negative value.
 Name | Type | Description
 ---- | ---- | -----------
 currency | [currency](#currency) | The three-character code or hexadecimal string used to denote currencies
-counterparty | [address](#address) | *Optional* The Ripple address of the account that owes or is owed the funds (omitted if `currency` is "XRP")
+counterparty | [address](#address) | *Optional* The Divvy address of the account that owes or is owed the funds (omitted if `currency` is "XDV")
 value | [value](#value) | *Optional* The quantity of the currency, denoted as a string to retain floating point precision
 
 # Transaction Overview
@@ -264,12 +264,12 @@ A transaction type is specified by the strings in the first column in the table 
 
 Type | Description
 ---- | -----------
-[payment](#payment) | A `payment` transaction represents a transfer of value from one account to another. Depending on the [path](https://ripple.com/build/paths/) taken, additional exchanges of value may occur atomically to facilitate the payment.
-[order](#order) | An `order` transaction creates a limit order. It defines an intent to exchange currencies, and creates an order in the XRP Ledger's order book if not completely fulfilled when placed. Orders can be partially fulfilled.
-[orderCancellation](#order-cancellation) | An `orderCancellation` transaction cancels an order in the XRP Ledger's order book.
+[payment](#payment) | A `payment` transaction represents a transfer of value from one account to another. Depending on the [path](https://divvy.com/build/paths/) taken, additional exchanges of value may occur atomically to facilitate the payment.
+[order](#order) | An `order` transaction creates a limit order. It defines an intent to exchange currencies, and creates an order in the XDV Ledger's order book if not completely fulfilled when placed. Orders can be partially fulfilled.
+[orderCancellation](#order-cancellation) | An `orderCancellation` transaction cancels an order in the XDV Ledger's order book.
 [trustline](#trustline) | A `trustline` transactions creates or modifies a trust line between two accounts.
-[settings](#settings) | A `settings` transaction modifies the settings of an account in the XRP Ledger.
-[escrowCreation](#escrow-creation) | An `escrowCreation` transaction creates an escrow on the ledger, which locks XRP until a cryptographic condition is met or it expires. It is like an escrow service where the XRP Ledger acts as the escrow agent.
+[settings](#settings) | A `settings` transaction modifies the settings of an account in the XDV Ledger.
+[escrowCreation](#escrow-creation) | An `escrowCreation` transaction creates an escrow on the ledger, which locks XDV until a cryptographic condition is met or it expires. It is like an escrow service where the XDV Ledger acts as the escrow agent.
 [escrowCancellation](#escrow-cancellation) | An `escrowCancellation` transaction unlocks the funds in an escrow and sends them back to the creator of the escrow, but it will only work after the escrow expires.
 [escrowExecution](#escrow-execution) | An `escrowExecution` transaction unlocks the funds in an escrow and sends them to the destination of the escrow, but it will only work if the cryptographic condition is provided.
 [checkCreate](#check-create) | A `checkCreate` transaction creates a check on the ledger, which is a deferred payment that can be cashed by its intended destination.
@@ -278,7 +278,7 @@ Type | Description
 
 ## Transaction Flow
 
-Executing a transaction with `RippleAPI` requires the following four steps:
+Executing a transaction with `DivvyAPI` requires the following four steps:
 
 1. Prepare - Create an unsigned transaction based on a [specification](#transaction-specifications) and [instructions](#transaction-instructions). There is a method to prepare each type of transaction:
     * [preparePayment](#preparepayment)
@@ -298,7 +298,7 @@ Executing a transaction with `RippleAPI` requires the following four steps:
 
 ## Transaction Fees
 
-Every transaction must destroy a small amount of XRP as a cost to send the transaction. This is also called a *transaction fee*. The transaction cost is designed to increase along with the load on the XRP Ledger, making it very expensive to deliberately or inadvertently overload the peer-to-peer network that powers the XRP Ledger.
+Every transaction must destroy a small amount of XDV as a cost to send the transaction. This is also called a *transaction fee*. The transaction cost is designed to increase along with the load on the XDV Ledger, making it very expensive to deliberately or inadvertently overload the peer-to-peer network that powers the XDV Ledger.
 
 You can choose the size of the fee you want to pay or let a default be used. You can get an estimate of the fee required to be included in the next ledger closing with the [getFee](#getfee) method.
 
@@ -315,7 +315,7 @@ maxLedgerVersionOffset | integer | *Optional* Offset from current validated ledg
 sequence | [sequence](#account-sequence-number) | *Optional* The initiating account's sequence number for this transaction.
 signersCount | integer | *Optional* Number of signers that will be signing this transaction.
 
-We recommended that you specify a `maxLedgerVersion` so that you can quickly determine that a failed transaction will never succeeed in the future. It is impossible for a transaction to succeed after the XRP Ledger's consensus-validated ledger version exceeds the transaction's `maxLedgerVersion`. If you omit `maxLedgerVersion`, the "prepare*" method automatically supplies a `maxLedgerVersion` equal to the current ledger plus 3, which it includes in the return value from the "prepare*" method.
+We recommended that you specify a `maxLedgerVersion` so that you can quickly determine that a failed transaction will never succeeed in the future. It is impossible for a transaction to succeed after the XDV Ledger's consensus-validated ledger version exceeds the transaction's `maxLedgerVersion`. If you omit `maxLedgerVersion`, the "prepare*" method automatically supplies a `maxLedgerVersion` equal to the current ledger plus 3, which it includes in the return value from the "prepare*" method.
 
 ## Transaction ID
 
@@ -350,19 +350,19 @@ Name | Type | Description
 source | object | The source of the funds to be sent.
 *source.* address | [address](#address) | The address to send from.
 *source.* amount | [laxAmount](#amount) | An exact amount to send. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with source.maxAmount)
-*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Ripple account.
+*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Divvy account.
 *source.* maxAmount | [laxAmount](#amount) | The maximum amount to send. (This field is exclusive with source.amount)
 destination | object | The destination of the funds to be sent.
 *destination.* address | [address](#address) | The address to receive at.
 *destination.* amount | [laxAmount](#amount) | An exact amount to deliver to the recipient. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with destination.minAmount).
-*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Ripple account.
+*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Divvy account.
 *destination.* address | [address](#address) | The address to send to.
 *destination.* minAmount | [laxAmount](#amount) | The minimum amount to be delivered. (This field is exclusive with destination.amount)
 allowPartialPayment | boolean | *Optional* If true, this payment should proceed even if the whole amount cannot be delivered due to a lack of liquidity or a lack of funds in the source account.
 invoiceID | string | *Optional* A 256-bit hash that can be used to identify a particular payment.
 limitQuality | boolean | *Optional* Only take paths where all the conversions have an input:output ratio that is equal or better than the ratio of destination.amount:source.maxAmount.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-noDirectRipple | boolean | *Optional* If true and paths are specified, the sender would like the XRP Ledger to disregard any direct paths from the source account to the destination account. This may be used to take advantage of an arbitrage opportunity or by gateways wishing to issue balances from a hot wallet to a user who has mistakenly set a trustline directly to the hot wallet.
+noDirectDivvy | boolean | *Optional* If true and paths are specified, the sender would like the XDV Ledger to disregard any direct paths from the source account to the destination account. This may be used to take advantage of an arbitrage opportunity or by gateways wishing to issue balances from a hot wallet to a user who has mistakenly set a trustline directly to the hot wallet.
 paths | string | *Optional* The paths of trustlines and orders to use in executing the payment.
 
 ### Example
@@ -404,7 +404,7 @@ frozen | boolean | *Optional* If true, the trustline is frozen, which means that
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
 qualityIn | number | *Optional* Incoming balances on this trustline are valued at this ratio.
 qualityOut | number | *Optional* Outgoing balances on this trustline are valued at this ratio.
-ripplingDisabled | boolean | *Optional* If true, payments cannot ripple through this trustline.
+ripplingDisabled | boolean | *Optional* If true, payments cannot divvy through this trustline.
 
 ### Example
 
@@ -457,7 +457,7 @@ passive | boolean | *Optional* If enabled, the offer will not consume offers tha
     "value": "10.1"
   },
   "totalPrice": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "2"
   },
   "passive": true,
@@ -491,16 +491,16 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultRipple | boolean | *Optional* Enable [rippling](https://ripple.com/build/understanding-the-noripple-flag/) on this account’s trust lines by default. (New in [rippled 0.27.3](https://github.com/ripple/rippled/releases/tag/0.27.3))
-depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://ripple.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://ripple.com/build/known-amendments/#depositauth))
+defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/divvy/divvyd/releases/tag/0.27.3))
+depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://divvy.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://divvy.com/build/known-amendments/#depositauth))
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
-disallowIncomingXRP | boolean | *Optional* Indicates that client applications should not send XRP to this account. Not enforced by rippled.
+disallowIncomingXDV | boolean | *Optional* Indicates that client applications should not send XDV to this account. Not enforced by divvyd.
 domain | string | *Optional*  The domain that owns this account, as a hexadecimal string representing the ASCII for the domain in lowercase.
 emailHash | string,null | *Optional* Hash of an email address to be used for generating an avatar image. Conventionally, clients use Gravatar to display this image. Use `null` to clear.
 enableTransactionIDTracking | boolean | *Optional* Track the ID of this account’s most recent transaction.
 globalFreeze | boolean | *Optional* Freeze all assets issued by this account.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Ripple.
+messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Divvy.
 noFreeze | boolean | *Optional* Permanently give up the ability to freeze individual trust lines. This flag can never be disabled after being enabled.
 passwordSpent | boolean | *Optional* Indicates that the account has used its free SetRegularKey transaction.
 regularKey | [address](#address),null | *Optional* The public key of a new keypair, to use as the regular key to this account, as a base-58-encoded string in the same format as an account address. Use `null` to remove the regular key.
@@ -510,7 +510,7 @@ signers | object | *Optional* Settings that determine what sets of accounts can 
 *signers.* threshold | integer | *Optional* A target number for the signer weights. A multi-signature from this list is valid only if the sum weights of the signatures provided is equal or greater than this value. To delete the signers setting, use the value `0`.
 *signers.* weights | array | *Optional* Weights of signatures for each signer.
 *signers.* weights[] | object | An association of an address and a weight.
-*signers.weights[].* address | [address](#address) | A Ripple account address
+*signers.weights[].* address | [address](#address) | A Divvy account address
 *signers.weights[].* weight | integer | The weight that the signature of this account counts as towards the threshold.
 transferRate | number,null | *Optional*  The fee to charge when users transfer this account’s issuances, as the decimal amount that must be sent to deliver 1 unit. Has precision up to 9 digits beyond the decimal point. Use `null` to set no fee.
 
@@ -519,7 +519,7 @@ transferRate | number,null | *Optional*  The fee to charge when users transfer t
 
 ```json
 {
-  "domain": "ripple.com",
+  "domain": "divvy.com",
   "memos": [
     {
       "type": "test",
@@ -537,8 +537,8 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of XRP for sender to escrow.
-destination | [address](#address) | Address to receive escrowed XRP.
+amount | [value](#value) | Amount of XDV for sender to escrow.
+destination | [address](#address) | Address to receive escrowed XDV.
 allowCancelAfter | date-time string | *Optional* If present, the escrow may be cancelled after this time.
 allowExecuteAfter | date-time string | *Optional* If present, the escrow can not be executed before this time.
 condition | string | *Optional* A hex value representing a [PREIMAGE-SHA-256 crypto-condition](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1). If present, `fulfillment` is required upon execution.
@@ -612,7 +612,7 @@ See [Transaction Types](#transaction-types) for a description.
 Name | Type | Description
 ---- | ---- | -----------
 destination | [address](#address) | Address of the account that can cash the check.
-sendMax | [laxAmount](#amount) | Amount of source currency the check is allowed to debit the sender, including transfer fees on non-XRP currencies.
+sendMax | [laxAmount](#amount) | Amount of source currency the check is allowed to debit the sender, including transfer fees on non-XDV currencies.
 destinationTag | integer | *Optional* Destination tag that identifies the reason for the check, or a hosted recipient to pay.
 expiration | date-time string | *Optional* Time after which the check is no longer valid.
 invoiceID | string | *Optional* 256-bit hash, as a 64-character hexadecimal string, representing a specific reason or identifier for this check.
@@ -624,7 +624,7 @@ invoiceID | string | *Optional* 256-bit hash, as a 64-character hexadecimal stri
 {
   "destination": "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
   "sendMax": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "1"
   }
 }
@@ -665,7 +665,7 @@ deliverMin | [laxAmount](#amount) | *Optional* Redeem the Check for at least thi
 ```json
 {
   "amount": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "1"
   },
   "checkID": "838766BA2B995C00744175F69A1B11E32C3DBC40E64801A4056FCBD657F57334"
@@ -679,9 +679,9 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of XRP for sender to set aside in this channel.
-destination | [address](#address) | Address to receive XRP claims against this channel.
-settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed XRP.
+amount | [value](#value) | Amount of XDV for sender to set aside in this channel.
+destination | [address](#address) | Address to receive XDV claims against this channel.
+settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed XDV.
 publicKey | string | Public key of the key pair the source will use to sign claims against this channel.
 cancelAfter | date-time string | *Optional* Time when this channel expires.
 destinationTag | integer | *Optional* Destination tag.
@@ -706,7 +706,7 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of XRP to fund the channel with.
+amount | [value](#value) | Amount of XDV to fund the channel with.
 channel | string | 256-bit hexadecimal channel identifier.
 expiration | date-time string | *Optional* New expiration for this channel.
 
@@ -728,8 +728,8 @@ See [Transaction Types](#transaction-types) for a description.
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | *Optional* XRP balance of this channel after claim is processed.
-balance | [value](#value) | *Optional* Amount of XRP authorized by signature.
+amount | [value](#value) | *Optional* XDV balance of this channel after claim is processed.
+balance | [value](#value) | *Optional* Amount of XDV authorized by signature.
 close | boolean | *Optional* Request to close the channel.
 publicKey | string | *Optional* Public key of the channel's sender
 renew | boolean | *Optional* Clear the channel's expiration time.
@@ -751,7 +751,7 @@ signature | string | *Optional* Signature of this claim.
 
 `connect(): Promise<void>`
 
-Tells the RippleAPI instance to connect to its rippled server.
+Tells the DivvyAPI instance to connect to its divvyd server.
 
 ### Parameters
 
@@ -769,7 +769,7 @@ See [Boilerplate](#boilerplate) for code sample.
 
 `disconnect(): Promise<void>`
 
-Tells the RippleAPI instance to disconnect from its rippled server.
+Tells the DivvyAPI instance to disconnect from its divvyd server.
 
 ### Parameters
 
@@ -787,7 +787,7 @@ See [Boilerplate](#boilerplate) for code sample
 
 `isConnected(): boolean`
 
-Checks if the RippleAPI instance is connected to its rippled server.
+Checks if the DivvyAPI instance is connected to its divvyd server.
 
 ### Parameters
 
@@ -811,7 +811,7 @@ true
 
 `getServerInfo(): Promise<object>`
 
-Get status information about the server that the RippleAPI instance is connected to.
+Get status information about the server that the DivvyAPI instance is connected to.
 
 ### Parameters
 
@@ -823,28 +823,28 @@ This method returns a promise that resolves with an object with the following st
 
 Name | Type | Description
 ---- | ---- | -----------
-buildVersion | string | The version number of the running rippled version.
-completeLedgers | string | Range expression indicating the sequence numbers of the ledger versions the local rippled has in its database. It is possible to be a disjoint sequence, e.g. “2500-5000,32570-7695432”.
-hostID | string | On an admin request, returns the hostname of the server running the rippled instance; otherwise, returns a unique four letter word.
-ioLatencyMs | number | Amount of time spent waiting for I/O operations to be performed, in milliseconds. If this number is not very, very low, then the rippled server is probably having serious load issues.
+buildVersion | string | The version number of the running divvyd version.
+completeLedgers | string | Range expression indicating the sequence numbers of the ledger versions the local divvyd has in its database. It is possible to be a disjoint sequence, e.g. “2500-5000,32570-7695432”.
+hostID | string | On an admin request, returns the hostname of the server running the divvyd instance; otherwise, returns a unique four letter word.
+ioLatencyMs | number | Amount of time spent waiting for I/O operations to be performed, in milliseconds. If this number is not very, very low, then the divvyd server is probably having serious load issues.
 lastClose | object | Information about the last time the server closed a ledger.
 *lastClose.* convergeTimeS | number | The time it took to reach a consensus for the last ledger closing, in seconds.
 *lastClose.* proposers | integer | Number of trusted validators participating in the ledger closing.
 loadFactor | number | The load factor the server is currently enforcing, as a multiplier on the base transaction fee. The load factor is determined by the highest of the individual server’s load factor, cluster’s load factor, and the overall network’s load factor.
-peers | integer | How many other rippled servers the node is currently connected to.
+peers | integer | How many other divvyd servers the node is currently connected to.
 pubkeyNode | string | Public key used to verify this node for internal communications; this key is automatically generated by the server the first time it starts up. (If deleted, the node can just create a new pair of keys.)
-serverState | string | A string indicating to what extent the server is participating in the network. See [Possible Server States](https://ripple.com/build/rippled-apis/#possible-server-states) for more details.
+serverState | string | A string indicating to what extent the server is participating in the network. See [Possible Server States](https://divvy.com/build/divvyd-apis/#possible-server-states) for more details.
 validatedLedger | object | Information about the fully-validated ledger with the highest sequence number (the most recent).
 *validatedLedger.* age | integer | The time since the ledger was closed, in seconds.
-*validatedLedger.* baseFeeXRP | [value](#value) | Base fee, in XRP. This may be represented in scientific notation such as 1e-05 for 0.00005.
+*validatedLedger.* baseFeeXDV | [value](#value) | Base fee, in XDV. This may be represented in scientific notation such as 1e-05 for 0.00005.
 *validatedLedger.* hash | string | Unique hash for the ledger, as an uppercase hexadecimal string.
-*validatedLedger.* reserveBaseXRP | [value](#value) | Minimum amount of XRP necessary for every account to keep in reserve.
-*validatedLedger.* reserveIncrementXRP | [value](#value) | Amount of XRP added to the account reserve for each object an account is responsible for in the ledger.
+*validatedLedger.* reserveBaseXDV | [value](#value) | Minimum amount of XDV necessary for every account to keep in reserve.
+*validatedLedger.* reserveIncrementXDV | [value](#value) | Amount of XDV added to the account reserve for each object an account is responsible for in the ledger.
 *validatedLedger.* ledgerVersion | integer | Identifying sequence number of this ledger version.
 validationQuorum | number | Minimum number of trusted validations required in order to validate a ledger version. Some circumstances may cause the server to require more validations.
 load | object | *Optional* *(Admin only)* Detailed information about the current load state of the server.
 *load.* jobTypes | array\<object\> | *(Admin only)* Information about the rate of different types of jobs being performed by the server and how much time it spends on each.
-*load.* threads | number | *(Admin only)* The number of threads in the server’s main job pool, performing various Ripple Network operations.
+*load.* threads | number | *(Admin only)* The number of threads in the server’s main job pool, performing various Divvy Network operations.
 pubkeyValidator | string | *Optional* *(Admin only)* Public key used by this node to sign ledger validations.
 
 ### Example
@@ -870,10 +870,10 @@ return api.getServerInfo().then(info => {/* ... */});
   "serverState": "full",
   "validatedLedger": {
     "age": 5,
-    "baseFeeXRP": "0.00001",
+    "baseFeeXDV": "0.00001",
     "hash": "4482DEE5362332F54A4036ED57EE1767C9F33CF7CE5A6670355C16CECE381D46",
-    "reserveBaseXRP": "20",
-    "reserveIncrementXRP": "5",
+    "reserveBaseXDV": "20",
+    "reserveIncrementXDV": "5",
     "ledgerVersion": 6595042
   },
   "validationQuorum": 3
@@ -885,7 +885,7 @@ return api.getServerInfo().then(info => {/* ... */});
 
 `getFee(): Promise<string>`
 
-Returns the estimated transaction fee for the rippled server the RippleAPI instance is connected to.
+Returns the estimated transaction fee for the divvyd server the DivvyAPI instance is connected to.
 
 ### Parameters
 
@@ -893,7 +893,7 @@ This method has no parameters.
 
 ### Return Value
 
-This method returns a promise that resolves with a string encoded floating point value representing the estimated fee to submit a transaction, expressed in XRP.
+This method returns a promise that resolves with a string encoded floating point value representing the estimated fee to submit a transaction, expressed in XDV.
 
 ### Example
 
@@ -959,10 +959,10 @@ sequence | [sequence](#account-sequence-number) | The account sequence number of
 type | [transactionType](#transaction-types) | The type of the transaction.
 specification | object | A specification that would produce the same outcome as this transaction. The structure of the specification depends on the value of the `type` field (see [Transaction Types](#transaction-types) for details). *Note:* This is **not** necessarily the same as the original specification.
 outcome | object | The outcome of the transaction (what effects it had).
-*outcome.* result | string | Result code returned by rippled. See [Transaction Results](https://ripple.com/build/transactions/#full-transaction-response-list) for a complete list.
-*outcome.* fee | [value](#value) | The XRP fee that was charged for the transaction.
-*outcome.balanceChanges.* \* | array\<[balance](#amount)\> | Key is the ripple address; value is an array of signed amounts representing changes of balances for that address.
-*outcome.orderbookChanges.* \* | array | Key is the maker's ripple address; value is an array of changes
+*outcome.* result | string | Result code returned by divvyd. See [Transaction Results](https://divvy.com/build/transactions/#full-transaction-response-list) for a complete list.
+*outcome.* fee | [value](#value) | The XDV fee that was charged for the transaction.
+*outcome.balanceChanges.* \* | array\<[balance](#amount)\> | Key is the divvy address; value is an array of signed amounts representing changes of balances for that address.
+*outcome.orderbookChanges.* \* | array | Key is the maker's divvy address; value is an array of changes
 *outcome.orderbookChanges.* \*[] | object | A change to an order.
 *outcome.orderbookChanges.\*[].* direction | string | Equal to "buy" for buy orders and "sell" for sell orders.
 *outcome.orderbookChanges.\*[].* quantity | [amount](#amount) | The amount to be bought or sold by the maker.
@@ -996,7 +996,7 @@ return api.getTransaction(id).then(transaction => {
     "source": {
       "address": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
       "maxAmount": {
-        "currency": "XRP",
+        "currency": "XDV",
         "value": "1.112209"
       }
     },
@@ -1040,13 +1040,13 @@ return api.getTransaction(id).then(transaction => {
       ],
       "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59": [
         {
-          "currency": "XRP",
+          "currency": "XDV",
           "value": "-1.101208"
         }
       ],
       "r9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
         {
-          "currency": "XRP",
+          "currency": "XDV",
           "value": "1.101198"
         },
         {
@@ -1061,7 +1061,7 @@ return api.getTransaction(id).then(transaction => {
         {
           "direction": "buy",
           "quantity": {
-            "currency": "XRP",
+            "currency": "XDV",
             "value": "1.101198"
           },
           "totalPrice": {
@@ -1136,7 +1136,7 @@ return api.getTransactions(address).then(transaction => {
       "source": {
         "address": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
         "maxAmount": {
-          "currency": "XRP",
+          "currency": "XDV",
           "value": "1.112209"
         }
       },
@@ -1179,13 +1179,13 @@ return api.getTransactions(address).then(transaction => {
         ],
         "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59": [
           {
-            "currency": "XRP",
+            "currency": "XDV",
             "value": "-1.101208"
           }
         ],
         "r9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
           {
-            "currency": "XRP",
+            "currency": "XDV",
             "value": "1.101198"
           },
           {
@@ -1200,7 +1200,7 @@ return api.getTransactions(address).then(transaction => {
           {
             "direction": "buy",
             "quantity": {
-              "currency": "XRP",
+              "currency": "XDV",
               "value": "1.101198"
             },
             "totalPrice": {
@@ -1233,7 +1233,7 @@ return api.getTransactions(address).then(transaction => {
       "source": {
         "address": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
         "maxAmount": {
-          "currency": "XRP",
+          "currency": "XDV",
           "value": "1.112209"
         }
       },
@@ -1276,13 +1276,13 @@ return api.getTransactions(address).then(transaction => {
         ],
         "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59": [
           {
-            "currency": "XRP",
+            "currency": "XDV",
             "value": "-1.101208"
           }
         ],
         "r9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
           {
-            "currency": "XRP",
+            "currency": "XDV",
             "value": "1.101198"
           },
           {
@@ -1297,7 +1297,7 @@ return api.getTransactions(address).then(transaction => {
           {
             "direction": "buy",
             "quantity": {
-              "currency": "XRP",
+              "currency": "XDV",
               "value": "1.101198"
             },
             "totalPrice": {
@@ -1347,7 +1347,7 @@ counterparty | object | Properties of the trustline from the perspective of the 
 *counterparty.* limit | [value](#value) | The maximum amount that the counterparty can be owed through the trustline.
 *counterparty.* authorized | boolean | *Optional* If true, the counterparty authorizes this party to hold issuances from the counterparty.
 *counterparty.* frozen | boolean | *Optional* If true, the trustline is frozen, which means that funds can only be sent to the counterparty.
-*counterparty.* ripplingDisabled | boolean | *Optional* If true, payments cannot ripple through this trustline.
+*counterparty.* ripplingDisabled | boolean | *Optional* If true, payments cannot divvy through this trustline.
 state | object | Properties of the trustline regarding it's current state that are not part of the specification.
 *state.* balance | [signedValue](#value) | The balance on the trustline, representing which party owes the other and by how much.
 
@@ -1488,7 +1488,7 @@ Name | Type | Description
 ---- | ---- | -----------
 currency | [currency](#currency) | The three-character code or hexadecimal string used to denote currencies
 value | [signedValue](#value) | The balance on the trustline
-counterparty | [address](#address) | *Optional* The Ripple address of the account that owes or is owed the funds.
+counterparty | [address](#address) | *Optional* The Divvy address of the account that owes or is owed the funds.
 
 ### Example
 
@@ -1503,7 +1503,7 @@ return api.getBalances(address).then(balances =>
 [
   {
     "value": "922.913243",
-    "currency": "XRP"
+    "currency": "XDV"
   },
   {
     "value": "0",
@@ -1639,7 +1639,7 @@ Returns aggregate balances by currency plus a breakdown of assets and obligation
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | The Ripple address of the account to get the balance sheet of.
+address | [address](#address) | The Divvy address of the account to get the balance sheet of.
 options | object | *Optional* Options to determine how the balances will be calculated.
 *options.* excludeAddresses | array\<[address](#address)\> | *Optional* Addresses to exclude from the balance totals.
 *options.* ledgerVersion | integer | *Optional* Get the balance sheet as of this historical ledger version.
@@ -1736,7 +1736,7 @@ Name | Type | Description
 ---- | ---- | -----------
 pathfind | object | Specification of a pathfind request.
 *pathfind.* source | object | Properties of the source of funds.
-*pathfind.source.* address | [address](#address) | The Ripple address of the account where funds will come from.
+*pathfind.source.* address | [address](#address) | The Divvy address of the account where funds will come from.
 *pathfind.source.* amount | [laxAmount](#amount) | *Optional* The amount of funds to send.
 *pathfind.source.* currencies | array | *Optional* An array of currencies (with optional counterparty) that may be used in the payment paths.
 *pathfind.source.* currencies[] | object | A currency with optional counterparty.
@@ -1755,12 +1755,12 @@ Name | Type | Description
 source | object | Properties of the source of the payment.
 *source.* address | [address](#address) | The address to send from.
 *source.* amount | [laxAmount](#amount) | An exact amount to send. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with source.maxAmount)
-*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Ripple account.
+*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Divvy account.
 *source.* maxAmount | [laxAmount](#amount) | The maximum amount to send. (This field is exclusive with source.amount)
 destination | object | Properties of the destination of the payment.
 *destination.* address | [address](#address) | The address to receive at.
 *destination.* amount | [laxAmount](#amount) | An exact amount to deliver to the recipient. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with destination.minAmount).
-*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Ripple account.
+*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Divvy account.
 *destination.* address | [address](#address) | The address to send to.
 *destination.* minAmount | [laxAmount](#amount) | The minimum amount to be delivered. (This field is exclusive with destination.amount)
 paths | string | The paths of trustlines and orders to use in executing the payment.
@@ -1804,7 +1804,7 @@ return api.getPaths(pathfind)
         "value": "100"
       }
     },
-    "paths": "[[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XRP\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XRP\"},{\"currency\":\"USD\",\"issuer\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XRP\"},{\"currency\":\"USD\",\"issuer\":\"rHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"rHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}]]"
+    "paths": "[[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XDV\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XDV\"},{\"currency\":\"USD\",\"issuer\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"XDV\"},{\"currency\":\"USD\",\"issuer\":\"rHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"rHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}]]"
   },
   {
     "source": {
@@ -1822,13 +1822,13 @@ return api.getPaths(pathfind)
         "value": "100"
       }
     },
-    "paths": "[[{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"XRP\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"XRP\"},{\"currency\":\"USD\",\"issuer\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}]]"
+    "paths": "[[{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"XDV\"},{\"currency\":\"USD\",\"issuer\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}],[{\"account\":\"rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"XDV\"},{\"currency\":\"USD\",\"issuer\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"rMH4UxPrbuMa1spCBR98hLLyNJp4d8p4tM\"}]]"
   },
   {
     "source": {
       "address": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
       "maxAmount": {
-        "currency": "XRP",
+        "currency": "XDV",
         "value": "0.207669"
       }
     },
@@ -1856,7 +1856,7 @@ Returns open orders for the specified account. Open orders are orders that have 
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | The Ripple address of the account to get open orders for.
+address | [address](#address) | The Divvy address of the account to get open orders for.
 options | object | *Optional* Options that determine what orders will be returned.
 *options.* ledgerVersion | integer | *Optional* Return orders as of this historical ledger version.
 *options.* limit | integer | *Optional* At most this many orders will be returned.
@@ -2088,7 +2088,7 @@ return api.getOrders(address).then(orders =>
     "specification": {
       "direction": "buy",
       "quantity": {
-        "currency": "XRP",
+        "currency": "XDV",
         "value": "115760.19"
       },
       "totalPrice": {
@@ -2192,7 +2192,7 @@ return api.getOrders(address).then(orders =>
         "counterparty": "r9Dr5xwkeLegBeXq6ujinjSBLQzQ1zQGjH"
       },
       "totalPrice": {
-        "currency": "XRP",
+        "currency": "XDV",
         "value": "2229.229447"
       }
     },
@@ -2238,8 +2238,8 @@ Name | Type | Description
 ---- | ---- | -----------
 address | [address](#address) | Address of an account to use as point-of-view. (This affects which unfunded offers are returned.)
 orderbook | object | The order book to get.
-*orderbook.* base | object | A currency-counterparty pair, or just currency if it's XRP
-*orderbook.* counter | object | A currency-counterparty pair, or just currency if it's XRP
+*orderbook.* base | object | A currency-counterparty pair, or just currency if it's XDV
+*orderbook.* counter | object | A currency-counterparty pair, or just currency if it's XDV
 options | object | *Optional* Options to determine what to return.
 *options.* ledgerVersion | integer | *Optional* Return the order book as of this historical ledger version.
 *options.* limit | integer | *Optional* Return at most this many orders from the order book.
@@ -2799,16 +2799,16 @@ This method returns a promise that resolves with an array of objects with the fo
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultRipple | boolean | *Optional* Enable [rippling](https://ripple.com/build/understanding-the-noripple-flag/) on this account’s trust lines by default. (New in [rippled 0.27.3](https://github.com/ripple/rippled/releases/tag/0.27.3))
-depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://ripple.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://ripple.com/build/known-amendments/#depositauth))
+defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/divvy/divvyd/releases/tag/0.27.3))
+depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://divvy.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://divvy.com/build/known-amendments/#depositauth))
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
-disallowIncomingXRP | boolean | *Optional* Indicates that client applications should not send XRP to this account. Not enforced by rippled.
+disallowIncomingXDV | boolean | *Optional* Indicates that client applications should not send XDV to this account. Not enforced by divvyd.
 domain | string | *Optional*  The domain that owns this account, as a hexadecimal string representing the ASCII for the domain in lowercase.
 emailHash | string,null | *Optional* Hash of an email address to be used for generating an avatar image. Conventionally, clients use Gravatar to display this image. Use `null` to clear.
 enableTransactionIDTracking | boolean | *Optional* Track the ID of this account’s most recent transaction.
 globalFreeze | boolean | *Optional* Freeze all assets issued by this account.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Ripple.
+messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Divvy.
 noFreeze | boolean | *Optional* Permanently give up the ability to freeze individual trust lines. This flag can never be disabled after being enabled.
 passwordSpent | boolean | *Optional* Indicates that the account has used its free SetRegularKey transaction.
 regularKey | [address](#address),null | *Optional* The public key of a new keypair, to use as the regular key to this account, as a base-58-encoded string in the same format as an account address. Use `null` to remove the regular key.
@@ -2818,7 +2818,7 @@ signers | object | *Optional* Settings that determine what sets of accounts can 
 *signers.* threshold | integer | *Optional* A target number for the signer weights. A multi-signature from this list is valid only if the sum weights of the signatures provided is equal or greater than this value. To delete the signers setting, use the value `0`.
 *signers.* weights | array | *Optional* Weights of signatures for each signer.
 *signers.* weights[] | object | An association of an address and a weight.
-*signers.weights[].* address | [address](#address) | A Ripple account address
+*signers.weights[].* address | [address](#address) | A Divvy account address
 *signers.weights[].* weight | integer | The weight that the signature of this account counts as towards the threshold.
 transferRate | number,null | *Optional*  The fee to charge when users transfer this account’s issuances, as the decimal amount that must be sent to deliver 1 unit. Has precision up to 9 digits beyond the decimal point. Use `null` to set no fee.
 
@@ -2834,7 +2834,7 @@ return api.getSettings(address).then(settings =>
 ```json
 {
   "requireDestinationTag": true,
-  "disallowIncomingXRP": true,
+  "disallowIncomingXDV": true,
   "emailHash": "23463B99B62A72F26ED677CC556C44E8",
   "domain": "example.com",
   "transferRate": 1.002,
@@ -2878,7 +2878,7 @@ This method returns a promise that resolves with an object with the following st
 Name | Type | Description
 ---- | ---- | -----------
 sequence | [sequence](#account-sequence-number) | The next (smallest unused) sequence number for this account.
-xrpBalance | [value](#value) | The XRP balance owned by the account.
+xdvBalance | [value](#value) | The XDV balance owned by the account.
 ownerCount | integer | Number of other ledger entries (specifically, trust lines and offers) attributed to this account. This is used to calculate the total reserve required to use the account.
 previousAffectingTransactionID | string | Hash value representing the most recent transaction that affected this account node directly. **Note:** This does not include changes to the account’s trust lines and offers.
 previousAffectingTransactionLedgerVersion | integer | The ledger version that the transaction identified by the `previousAffectingTransactionID` was validated in.
@@ -2896,7 +2896,7 @@ return api.getAccountInfo(address).then(info =>
 ```json
 {
   "sequence": 23,
-  "xrpBalance": "922.913243",
+  "xdvBalance": "922.913243",
   "ownerCount": 1,
   "previousAffectingTransactionID": "19899273706A9E040FDB5885EE991A1DC2BAD878A0D6E7DBCFB714E63BF737F7",
   "previousAffectingTransactionLedgerVersion": 6614625
@@ -2923,10 +2923,10 @@ This method returns a promise that resolves with an object with the following st
 Name | Type | Description
 ---- | ---- | -----------
 account | [address](#address) | Address that created the payment channel.
-destination | [address](#address) | Address to receive XRP claims against this channel.
-amount | [value](#value) | The total amount of XRP funded in this channel.
-balance | [value](#value) | The total amount of XRP delivered by this channel.
-settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed XRP.
+destination | [address](#address) | Address to receive XDV claims against this channel.
+amount | [value](#value) | The total amount of XDV funded in this channel.
+balance | [value](#value) | The total amount of XDV delivered by this channel.
+settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed XDV.
 previousAffectingTransactionID | string | Hash value representing the most recent transaction that affected this payment channel.
 previousAffectingTransactionLedgerVersion | integer | The ledger version that the transaction identified by the `previousAffectingTransactionID` was validated in.
 cancelAfter | date-time string | *Optional* Time when this channel expires as specified at creation.
@@ -2989,10 +2989,10 @@ ledgerHash | string | Unique identifying hash of the entire ledger.
 ledgerVersion | integer | The ledger version of this ledger.
 parentLedgerHash | string | Unique identifying hash of the ledger that came immediately before this one.
 parentCloseTime | date-time string | The time at which the previous ledger was closed.
-totalDrops | [value](#value) | Total number of drops (1/1,000,000th of an XRP) in the network, as a quoted integer. (This decreases as transaction fees cause XRP to be destroyed.)
+totalDrops | [value](#value) | Total number of drops (1/1,000,000th of an XDV) in the network, as a quoted integer. (This decreases as transaction fees cause XDV to be destroyed.)
 transactionHash | string | Hash of the transaction information included in this ledger.
-rawState | string | *Optional* A JSON string containing all state data for this ledger in rippled JSON format.
-rawTransactions | string | *Optional* A JSON string containing rippled format transaction JSON for all transactions that were validated in this ledger.
+rawState | string | *Optional* A JSON string containing all state data for this ledger in divvyd JSON format.
+rawTransactions | string | *Optional* A JSON string containing divvyd format transaction JSON for all transactions that were validated in this ledger.
 stateHashes | array\<string\> | *Optional* An array of hashes of all state data in this ledger.
 transactionHashes | array\<[id](#transaction-id)\> | *Optional* An array of hashes of all transactions that were validated in this ledger.
 transactions | array\<[getTransaction](#gettransaction)\> | *Optional* Array of all transactions that were validated in this ledger. Transactions are represented in the same format as the return value of [getTransaction](#gettransaction).
@@ -3045,7 +3045,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3114,7 +3114,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3181,7 +3181,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3199,7 +3199,7 @@ const order = {
     "value": "10.1"
   },
   "totalPrice": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "2"
   },
   "passive": true,
@@ -3246,7 +3246,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3298,7 +3298,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3309,7 +3309,7 @@ instructions | object | The instructions for how to execute the transaction afte
 ```javascript
 const address = 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59';
 const settings = {
-  "domain": "ripple.com",
+  "domain": "divvy.com",
   "memos": [
     {
       "type": "test",
@@ -3325,7 +3325,7 @@ return api.prepareSettings(address, settings)
 
 ```json
 {
-  "domain": "ripple.com",
+  "domain": "divvy.com",
   "memos": [
     {
       "type": "test",
@@ -3361,7 +3361,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3418,7 +3418,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3473,7 +3473,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3530,7 +3530,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3587,7 +3587,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3641,7 +3641,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3696,7 +3696,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3709,7 +3709,7 @@ const address = 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59';
 const checkCreate = {
   "destination": "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
   "sendMax": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "1"
   }
 };
@@ -3754,7 +3754,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3808,7 +3808,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in rippled JSON format.
+txJSON | string | The prepared transaction in divvyd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3820,7 +3820,7 @@ instructions | object | The instructions for how to execute the transaction afte
 const address = 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59';
 const checkCash = {
   "amount": {
-    "currency": "XRP",
+    "currency": "XDV",
     "value": "1"
   },
   "checkID": "838766BA2B995C00744175F69A1B11E32C3DBC40E64801A4056FCBD657F57334"
@@ -3852,7 +3852,7 @@ Sign a prepared transaction. The signed transaction must subsequently be [submit
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | Transaction represented as a JSON string in rippled format.
+txJSON | string | Transaction represented as a JSON string in divvyd format.
 secret | secret string | The secret of the account that is initiating the transaction.
 options | object | *Optional* Options that control the type of signature that will be generated.
 *options.* signAs | [address](#address) | *Optional* The account that the signature should count for in multisigning.
@@ -3939,7 +3939,7 @@ This method returns an object with the following structure:
 
 Name | Type | Description
 ---- | ---- | -----------
-resultCode | string | The result code returned by rippled. [List of transaction responses](https://ripple.com/build/transactions/#full-transaction-response-list)
+resultCode | string | The result code returned by divvyd. [List of transaction responses](https://divvy.com/build/transactions/#full-transaction-response-list)
 resultMessage | string | Human-readable explanation of the status of the transaction.
 
 ### Example
@@ -3963,7 +3963,7 @@ return api.submit(signedTransaction)
 
 `generateAddress(): {address: string, secret: string}`
 
-Generate a new XRP Ledger address and corresponding secret.
+Generate a new XDV Ledger address and corresponding secret.
 
 ### Parameters
 
@@ -3979,7 +3979,7 @@ This method returns an object with the following structure:
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | A randomly generated Ripple account address.
+address | [address](#address) | A randomly generated Divvy account address.
 secret | secret string | The secret corresponding to the `address`.
 
 ### Example
@@ -4008,7 +4008,7 @@ Sign a payment channel claim. The signature can be submitted in a subsequent [Pa
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | Amount of XRP authorized by the claim.
+amount | [value](#value) | Amount of XDV authorized by the claim.
 privateKey | string | The private key to sign the payment channel claim.
 
 ### Return Value
@@ -4047,7 +4047,7 @@ Verify a payment channel claim signature.
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | Amount of XRP authorized by the claim.
+amount | [value](#value) | Amount of XDV authorized by the claim.
 signature | string | Signature of this claim.
 publicKey | string | Public key of the channel's sender
 
@@ -4098,10 +4098,10 @@ ledger | object | The ledger header to hash.
 *ledger.* ledgerVersion | integer | The ledger version of this ledger.
 *ledger.* parentLedgerHash | string | Unique identifying hash of the ledger that came immediately before this one.
 *ledger.* parentCloseTime | date-time string | The time at which the previous ledger was closed.
-*ledger.* totalDrops | [value](#value) | Total number of drops (1/1,000,000th of an XRP) in the network, as a quoted integer. (This decreases as transaction fees cause XRP to be destroyed.)
+*ledger.* totalDrops | [value](#value) | Total number of drops (1/1,000,000th of an XDV) in the network, as a quoted integer. (This decreases as transaction fees cause XDV to be destroyed.)
 *ledger.* transactionHash | string | Hash of the transaction information included in this ledger.
-*ledger.* rawState | string | *Optional* A JSON string containing all state data for this ledger in rippled JSON format.
-*ledger.* rawTransactions | string | *Optional* A JSON string containing rippled format transaction JSON for all transactions that were validated in this ledger.
+*ledger.* rawState | string | *Optional* A JSON string containing all state data for this ledger in divvyd JSON format.
+*ledger.* rawTransactions | string | *Optional* A JSON string containing divvyd format transaction JSON for all transactions that were validated in this ledger.
 *ledger.* stateHashes | array\<string\> | *Optional* An array of hashes of all state data in this ledger.
 *ledger.* transactionHashes | array\<[id](#transaction-id)\> | *Optional* An array of hashes of all transactions that were validated in this ledger.
 *ledger.* transactions | array\<[getTransaction](#gettransaction)\> | *Optional* Array of all transactions that were validated in this ledger. Transactions are represented in the same format as the return value of [getTransaction](#gettransaction).
@@ -4141,11 +4141,11 @@ This event is emitted whenever a new ledger version is validated on the connecte
 
 Name | Type | Description
 ---- | ---- | -----------
-baseFeeXRP | [value](#value) | Base fee, in XRP.
+baseFeeXDV | [value](#value) | Base fee, in XDV.
 ledgerHash | string | Unique hash of the ledger that was closed, as hex.
 ledgerTimestamp | date-time string | The time at which this ledger closed.
-reserveBaseXRP | [value](#value) | The minimum reserve, in XRP, that is required for an account.
-reserveIncrementXRP | [value](#value) | The increase in account reserve that is added for each item the account owns, such as offers or trust lines.
+reserveBaseXDV | [value](#value) | The minimum reserve, in XDV, that is required for an account.
+reserveIncrementXDV | [value](#value) | The increase in account reserve that is added for each item the account owns, such as offers or trust lines.
 transactionCount | integer | Number of new transactions included in this ledger.
 ledgerVersion | integer | Ledger version of the ledger that closed.
 validatedLedgerVersions | string | Range of ledgers that the server has available. This may be discontiguous.
@@ -4161,12 +4161,12 @@ api.on('ledger', ledger => {
 
 ```json
 {
-  "baseFeeXRP": "0.00001",
+  "baseFeeXDV": "0.00001",
   "ledgerVersion": 14804627,
   "ledgerHash": "9141FA171F2C0CE63E609466AF728FF66C12F7ACD4B4B50B0947A7F3409D593A",
   "ledgerTimestamp": "2015-07-23T05:50:40.000Z",
-  "reserveBaseXRP": "20",
-  "reserveIncrementXRP": "5",
+  "reserveBaseXDV": "20",
+  "reserveIncrementXDV": "5",
   "transactionCount": 19,
   "validatedLedgerVersions": "13983423-14804627"
 }
@@ -4180,16 +4180,16 @@ This event is emitted when there is an error on the connection to the server tha
 ### Return Value
 
 The first parameter is a string indicating the error type:
-* `badMessage` - rippled returned a malformed message
+* `badMessage` - divvyd returned a malformed message
 * `websocket` - the websocket library emitted an error
-* one of the error codes found in the [rippled Universal Errors](https://ripple.com/build/rippled-apis/#universal-errors).
+* one of the error codes found in the [divvyd Universal Errors](https://divvy.com/build/divvyd-apis/#universal-errors).
 
 The second parameter is a message explaining the error.
 
 The third parameter is:
 * the message that caused the error for `badMessage`
 * the error object emitted for `websocket`
-* the parsed response for rippled errors
+* the parsed response for divvyd errors
 
 ### Example
 

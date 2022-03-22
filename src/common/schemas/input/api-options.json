@@ -5,7 +5,7 @@
   "properties": {
     "trace": {
       "type": "boolean",
-      "description": "If true, log rippled requests and responses to stdout."
+      "description": "If true, log divvyd requests and responses to stdout."
     },
     "feeCushion": {
       "type": "number",
@@ -14,13 +14,13 @@
     },
     "server": {
       "type": "string",
-      "description": "URI for rippled websocket port to connect to. Must start with `wss://` or `ws://`.",
+      "description": "URI for divvyd websocket port to connect to. Must start with `wss://` or `ws://`.",
       "format": "uri",
       "pattern": "^wss?://"
     },
     "proxy": {
       "format": "uri",
-      "description": "URI for HTTP/HTTPS proxy to use to connect to the rippled server."
+      "description": "URI for HTTP/HTTPS proxy to use to connect to the divvyd server."
     },
     "timeout": {
       "type": "integer",
@@ -33,7 +33,7 @@
     },
     "authorization": {
       "type": "string",
-      "description": "Username and password for HTTP basic authentication to the rippled server in the format **username:password**."
+      "description": "Username and password for HTTP basic authentication to the divvyd server in the format **username:password**."
     },
     "trustedCertificates": {
       "type": "array",

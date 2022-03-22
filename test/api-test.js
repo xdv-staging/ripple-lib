@@ -3,18 +3,18 @@
 const _ = require('lodash');
 const assert = require('assert-diff');
 const setupAPI = require('./setup-api');
-const RippleAPI = require('ripple-api').RippleAPI;
-const validate = RippleAPI._PRIVATE.validate;
+const DivvyAPI = require('divvy-api').DivvyAPI;
+const validate = DivvyAPI._PRIVATE.validate;
 const fixtures = require('./fixtures');
 const requests = fixtures.requests;
 const responses = fixtures.responses;
 const addresses = require('./fixtures/addresses');
 const hashes = require('./fixtures/hashes');
 const address = addresses.ACCOUNT;
-const utils = RippleAPI._PRIVATE.ledgerUtils;
-const ledgerClosed = require('./fixtures/rippled/ledger-close-newer');
-const schemaValidator = RippleAPI._PRIVATE.schemaValidator;
-const binary = require('ripple-binary-codec');
+const utils = DivvyAPI._PRIVATE.ledgerUtils;
+const ledgerClosed = require('./fixtures/divvyd/ledger-close-newer');
+const schemaValidator = DivvyAPI._PRIVATE.schemaValidator;
+const binary = require('divvy-binary-codec');
 assert.options.strict = true;
 
 // how long before each test case times out
@@ -40,15 +40,15 @@ function checkResult(expected, schemaName, response) {
 }
 
 
-describe('RippleAPI', function () {
+describe('DivvyAPI', function () {
   this.timeout(TIMEOUT);
   const instructions = { maxLedgerVersionOffset: 100 };
   beforeEach(setupAPI.setup);
   afterEach(setupAPI.teardown);
 
   it('error inspect', function () {
-    const error = new this.api.errors.RippleError('mess', { data: 1 });
-    assert.strictEqual(error.inspect(), '[RippleError(mess, { data: 1 })]');
+    const error = new this.api.errors.DivvyError('mess', { data: 1 });
+    assert.strictEqual(error.inspect(), '[DivvyError(mess, { data: 1 })]');
   });
 
   describe('preparePayment', function () {
@@ -62,27 +62,27 @@ describe('RippleAPI', function () {
           _.partial(checkResult, responses.preparePayment.normal, 'prepare'));
     });
 
-    it('preparePayment - min amount xrp', function () {
+    it('preparePayment - min amount xdv', function () {
       const localInstructions = _.defaults({
         maxFee: '0.000012'
       }, instructions);
       return this.api.preparePayment(
-        address, requests.preparePayment.minAmountXRP, localInstructions).then(
+        address, requests.preparePayment.minAmountXDV, localInstructions).then(
           _.partial(checkResult,
-            responses.preparePayment.minAmountXRP, 'prepare'));
+            responses.preparePayment.minAmountXDV, 'prepare'));
     });
 
-    it('preparePayment - min amount xrp2xrp', function () {
+    it('preparePayment - min amount xdv2xdv', function () {
       return this.api.preparePayment(
         address, requests.preparePayment.minAmount, instructions).then(
           _.partial(checkResult,
-            responses.preparePayment.minAmountXRPXRP, 'prepare'));
+            responses.preparePayment.minAmountXDVXDV, 'prepare'));
     });
 
-    it('preparePayment - XRP to XRP no partial', function () {
+    it('preparePayment - XDV to XDV no partial', function () {
       assert.throws(() => {
         this.api.preparePayment(address, requests.preparePayment.wrongPartial);
-      }, /XRP to XRP payments cannot be partial payments/);
+      }, /XDV to XDV payments cannot be partial payments/);
     });
 
     it('preparePayment - address must match payment.source.address', function (
@@ -510,9 +510,9 @@ describe('RippleAPI', function () {
 
   it('submit - failure', function () {
     return this.api.submit('BAD').then(() => {
-      assert(false, 'Should throw RippledError');
+      assert(false, 'Should throw DivvydError');
     }).catch(error => {
-      assert(error instanceof this.api.errors.RippledError);
+      assert(error instanceof this.api.errors.DivvydError);
       assert.strictEqual(error.data.resultCode, 'temBAD_FEE');
     });
   });
@@ -563,7 +563,7 @@ describe('RippleAPI', function () {
     }, /txJSON is not the same for all signedTransactions/);
   });
 
-  describe('RippleAPI', function () {
+  describe('DivvyAPI', function () {
 
     it('getBalances', function () {
       return this.api.getBalances(address).then(
@@ -1040,14 +1040,14 @@ describe('RippleAPI', function () {
     });
   });
 
-  // this is the case where core.RippleError just falls
+  // this is the case where core.DivvyError just falls
   // through the api to the user
   it('getTransactions - error', function () {
     const options = { types: ['payment', 'order'], initiated: true, limit: 13 };
     return this.api.getTransactions(address, options).then(() => {
-      assert(false, 'Should throw RippleError');
+      assert(false, 'Should throw DivvyError');
     }).catch(error => {
-      assert(error instanceof this.api.errors.RippleError);
+      assert(error instanceof this.api.errors.DivvyError);
     });
   });
 
@@ -1184,9 +1184,9 @@ describe('RippleAPI', function () {
       });
     });
 
-    it('with XRP', function () {
-      return this.api.getOrderbook(address, requests.getOrderbook.withXRP).then(
-        _.partial(checkResult, responses.getOrderbook.withXRP, 'getOrderbook'));
+    it('with XDV', function () {
+      return this.api.getOrderbook(address, requests.getOrderbook.withXDV).then(
+        _.partial(checkResult, responses.getOrderbook.withXDV, 'getOrderbook'));
     });
 
     it('sorted so that best deals come first', function () {
@@ -1252,7 +1252,7 @@ describe('RippleAPI', function () {
     return this.api.getPaymentChannel(channelId).then(() => {
       assert(false, 'Should throw entryNotFound');
     }).catch(error => {
-      assert(error instanceof this.api.errors.RippledError);
+      assert(error instanceof this.api.errors.DivvydError);
       assert(_.includes(error.message, 'entryNotFound'));
     });
   });
@@ -1283,7 +1283,7 @@ describe('RippleAPI', function () {
     return this.api.getServerInfo().then(() => {
       assert(false, 'Should throw NetworkError');
     }).catch(error => {
-      assert(error instanceof this.api.errors.RippledError);
+      assert(error instanceof this.api.errors.DivvydError);
       assert(_.includes(error.message, 'slowDown'));
     });
   });
@@ -1323,33 +1323,33 @@ describe('RippleAPI', function () {
 
   it('getPaths', function () {
     return this.api.getPaths(requests.getPaths.normal).then(
-      _.partial(checkResult, responses.getPaths.XrpToUsd, 'getPaths'));
+      _.partial(checkResult, responses.getPaths.XdvToUsd, 'getPaths'));
   });
 
   it('getPaths - queuing', function () {
     return Promise.all([
       this.api.getPaths(requests.getPaths.normal),
       this.api.getPaths(requests.getPaths.UsdToUsd),
-      this.api.getPaths(requests.getPaths.XrpToXrp)
+      this.api.getPaths(requests.getPaths.XdvToXdv)
     ]).then(results => {
-      checkResult(responses.getPaths.XrpToUsd, 'getPaths', results[0]);
+      checkResult(responses.getPaths.XdvToUsd, 'getPaths', results[0]);
       checkResult(responses.getPaths.UsdToUsd, 'getPaths', results[1]);
-      checkResult(responses.getPaths.XrpToXrp, 'getPaths', results[2]);
+      checkResult(responses.getPaths.XdvToXdv, 'getPaths', results[2]);
     });
   });
 
   // @TODO
-  // need decide what to do with currencies/XRP:
-  // if add 'XRP' in currencies, then there will be exception in
-  // xrpToDrops function (called from toRippledAmount)
+  // need decide what to do with currencies/XDV:
+  // if add 'XDV' in currencies, then there will be exception in
+  // xdvToDrops function (called from toDivvydAmount)
   it('getPaths USD 2 USD', function () {
     return this.api.getPaths(requests.getPaths.UsdToUsd).then(
       _.partial(checkResult, responses.getPaths.UsdToUsd, 'getPaths'));
   });
 
-  it('getPaths XRP 2 XRP', function () {
-    return this.api.getPaths(requests.getPaths.XrpToXrp).then(
-      _.partial(checkResult, responses.getPaths.XrpToXrp, 'getPaths'));
+  it('getPaths XDV 2 XDV', function () {
+    return this.api.getPaths(requests.getPaths.XdvToXdv).then(
+      _.partial(checkResult, responses.getPaths.XdvToXdv, 'getPaths'));
   });
 
   it('getPaths - source with issuer', function () {
@@ -1360,8 +1360,8 @@ describe('RippleAPI', function () {
     });
   });
 
-  it('getPaths - XRP 2 XRP - not enough', function () {
-    return this.api.getPaths(requests.getPaths.XrpToXrpNotEnough).then(() => {
+  it('getPaths - XDV 2 XDV - not enough', function () {
+    return this.api.getPaths(requests.getPaths.XdvToXdvNotEnough).then(() => {
       assert(false, 'Should throw NotFoundError');
     }).catch(error => {
       assert(error instanceof this.api.errors.NotFoundError);
@@ -1412,7 +1412,7 @@ describe('RippleAPI', function () {
     const pathfind = _.assign({}, requests.getPaths.normal,
       { source: { address: addresses.NOTFOUND } });
     return this.api.getPaths(pathfind).catch(error => {
-      assert(error instanceof this.api.errors.RippleError);
+      assert(error instanceof this.api.errors.DivvyError);
     });
   });
 
@@ -1538,10 +1538,10 @@ describe('RippleAPI', function () {
       });
   });
 
-  it('RippleError with data', function () {
-    const error = new this.api.errors.RippleError('_message_', '_data_');
+  it('DivvyError with data', function () {
+    const error = new this.api.errors.DivvyError('_message_', '_data_');
     assert.strictEqual(error.toString(),
-      '[RippleError(_message_, \'_data_\')]');
+      '[DivvyError(_message_, \'_data_\')]');
   });
 
   it('NotFoundError default message', function () {
@@ -1550,10 +1550,10 @@ describe('RippleAPI', function () {
       '[NotFoundError(Not found)]');
   });
 
-  it('common utils - toRippledAmount', function () {
+  it('common utils - toDivvydAmount', function () {
     const amount = { issuer: 'is', currency: 'c', value: 'v' };
 
-    assert.deepEqual(utils.common.toRippledAmount(amount), {
+    assert.deepEqual(utils.common.toDivvydAmount(amount), {
       issuer: 'is', currency: 'c', value: 'v'
     });
   });
@@ -1680,9 +1680,9 @@ describe('RippleAPI', function () {
   });
 });
 
-describe('RippleAPI - offline', function () {
+describe('DivvyAPI - offline', function () {
   it('prepareSettings and sign', function () {
-    const api = new RippleAPI();
+    const api = new DivvyAPI();
     const secret = 'shsWGZcmZz6YsWWmcnpfr6fLTdtFV';
     const settings = requests.prepareSettings.domain;
     const instructions = {
@@ -1698,7 +1698,7 @@ describe('RippleAPI - offline', function () {
   });
 
   it('getServerInfo - offline', function () {
-    const api = new RippleAPI();
+    const api = new DivvyAPI();
     return api.getServerInfo().then(() => {
       assert(false, 'Should throw error');
     }).catch(error => {
@@ -1707,7 +1707,7 @@ describe('RippleAPI - offline', function () {
   });
 
   it('computeLedgerHash', function () {
-    const api = new RippleAPI();
+    const api = new DivvyAPI();
     const header = requests.computeLedgerHash.header;
     const ledgerHash = api.computeLedgerHash(header);
     assert.strictEqual(ledgerHash,
@@ -1715,7 +1715,7 @@ describe('RippleAPI - offline', function () {
   });
 
   it('computeLedgerHash - with transactions', function () {
-    const api = new RippleAPI();
+    const api = new DivvyAPI();
     const header = _.omit(requests.computeLedgerHash.header,
       'transactionHash');
     header.rawTransactions = JSON.stringify(
@@ -1726,7 +1726,7 @@ describe('RippleAPI - offline', function () {
   });
 
   it('computeLedgerHash - incorrent transaction_hash', function () {
-    const api = new RippleAPI();
+    const api = new DivvyAPI();
     const header = _.assign({}, requests.computeLedgerHash.header,
       {
         transactionHash:
@@ -1738,21 +1738,21 @@ describe('RippleAPI - offline', function () {
   });
 
   /* eslint-disable no-unused-vars */
-  it('RippleAPI - implicit server port', function () {
-    const api = new RippleAPI({ server: 'wss://s1.ripple.com' });
+  it('DivvyAPI - implicit server port', function () {
+    const api = new DivvyAPI({ server: 'wss://s1.divvy.com' });
   });
   /* eslint-enable no-unused-vars */
-  it('RippleAPI invalid options', function () {
-    assert.throws(() => new RippleAPI({ invalid: true }));
+  it('DivvyAPI invalid options', function () {
+    assert.throws(() => new DivvyAPI({ invalid: true }));
   });
 
-  it('RippleAPI valid options', function () {
-    const api = new RippleAPI({ server: 'wss://s:1' });
+  it('DivvyAPI valid options', function () {
+    const api = new DivvyAPI({ server: 'wss://s:1' });
     assert.deepEqual(api.connection._url, 'wss://s:1');
   });
 
-  it('RippleAPI invalid server uri', function () {
-    assert.throws(() => new RippleAPI({ server: 'wss//s:1' }));
+  it('DivvyAPI invalid server uri', function () {
+    assert.throws(() => new DivvyAPI({ server: 'wss//s:1' }));
   });
 
 });

@@ -6,11 +6,11 @@ export type Amount = {
 }
 
 
-export type RippledAmount = string | Amount
+export type DivvydAmount = string | Amount
 
 /**
  * Specification of which currency the account taking the offer would pay/
- * receive, as an object with currency and issuer fields (omit issuer for XRP).
+ * receive, as an object with currency and issuer fields (omit issuer for XDV).
  * Similar to currency amounts.
  */
 export interface TakerRequestAmount {
@@ -19,7 +19,7 @@ export interface TakerRequestAmount {
 }
 
 /**
- * A currency-counterparty pair, or just currency if it's XRP.
+ * A currency-counterparty pair, or just currency if it's XDV.
  */
 export type Issue = {
   currency: string,

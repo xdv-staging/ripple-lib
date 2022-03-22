@@ -1,7 +1,7 @@
 import * as utils from './utils'
 const ValidationError = utils.common.errors.ValidationError
 const claimFlags = utils.common.txFlags.PaymentChannelClaim
-import {validate, xrpToDrops} from '../common'
+import {validate, xdvToDrops} from '../common'
 import {Instructions, Prepare} from './types'
 
 export type PaymentChannelClaim = {
@@ -25,10 +25,10 @@ function createPaymentChannelClaimTransaction(account: string,
   }
 
   if (claim.balance !== undefined) {
-    txJSON.Balance = xrpToDrops(claim.balance)
+    txJSON.Balance = xdvToDrops(claim.balance)
   }
   if (claim.amount !== undefined) {
-    txJSON.Amount = xrpToDrops(claim.amount)
+    txJSON.Amount = xdvToDrops(claim.amount)
   }
 
   if (Boolean(claim.signature) !== Boolean(claim.publicKey)) {

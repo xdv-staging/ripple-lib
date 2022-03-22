@@ -3,12 +3,12 @@ const _ = require('lodash');
 const assert = require('assert');
 const WebSocketServer = require('ws').Server;
 const EventEmitter2 = require('eventemitter2').EventEmitter2;
-const fixtures = require('./fixtures/rippled');
+const fixtures = require('./fixtures/divvyd');
 const addresses = require('./fixtures/addresses');
 const hashes = require('./fixtures/hashes');
-const transactionsResponse = require('./fixtures/rippled/account-tx');
-const accountLinesResponse = require('./fixtures/rippled/account-lines');
-const fullLedger = require('./fixtures/rippled/ledger-full-38129.json');
+const transactionsResponse = require('./fixtures/divvyd/account-tx');
+const accountLinesResponse = require('./fixtures/divvyd/account-lines');
+const fullLedger = require('./fixtures/divvyd/ledger-full-38129.json');
 const { getFreePort } = require('./utils/net-utils');
 
 function isUSD(json) {
@@ -47,7 +47,7 @@ function createLedgerResponse(request, response) {
   return JSON.stringify(newResponse);
 }
 
-module.exports = function createMockRippled(port) {
+module.exports = function createMockDivvyd(port) {
   const mock = new WebSocketServer({ port: port });
   _.assign(mock, EventEmitter2.prototype);
 
@@ -115,7 +115,7 @@ module.exports = function createMockRippled(port) {
       setTimeout(conn.terminate.bind(conn), request.data.disconnectIn);
     } else if (request.data.openOnOtherPort) {
       getFreePort().then(newPort => {
-        createMockRippled(newPort);
+        createMockDivvyd(newPort);
         conn.send(createResponse(request, {
           status: 'success', type: 'response',
           result: { port: newPort }
@@ -127,7 +127,7 @@ module.exports = function createMockRippled(port) {
         conn.terminate();
         close.call(mock, () => {
           setTimeout(() => {
-            createMockRippled(port);
+            createMockDivvyd(port);
           }, request.data.closeServerAndReopen);
         });
       }, 10);
@@ -400,10 +400,10 @@ module.exports = function createMockRippled(port) {
 
   mock.on('request_book_offers', function (request, conn) {
     if (request.taker_pays.issuer === 'rp8rJYTpodf8qbSCHVTNacf8nSW8mRakFw') {
-      conn.send(createResponse(request, fixtures.book_offers.xrp_usd));
+      conn.send(createResponse(request, fixtures.book_offers.xdv_usd));
     } else if (request.taker_gets.issuer
       === 'rp8rJYTpodf8qbSCHVTNacf8nSW8mRakFw') {
-      conn.send(createResponse(request, fixtures.book_offers.usd_xrp));
+      conn.send(createResponse(request, fixtures.book_offers.usd_xdv));
     } else if (isBTC(request.taker_gets.currency)
       && isUSD(request.taker_pays.currency)) {
       conn.send(
@@ -417,7 +417,7 @@ module.exports = function createMockRippled(port) {
     }
   });
 
-  mock.on('request_ripple_path_find', function (request, conn) {
+  mock.on('request_divvy_path_find', function (request, conn) {
     let response = null;
     if (request.subcommand === 'close') {   // for path_find command
       return;
@@ -429,7 +429,7 @@ module.exports = function createMockRippled(port) {
     } else if (request.source_account === addresses.OTHER_ACCOUNT) {
       response = createResponse(request, fixtures.path_find.sendUSD);
     } else if (request.source_account === addresses.THIRD_ACCOUNT) {
-      response = createResponse(request, fixtures.path_find.XrpToXrp, {
+      response = createResponse(request, fixtures.path_find.XdvToXdv, {
         destination_amount: request.destination_amount,
         destination_address: request.destination_address
       });
