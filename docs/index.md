@@ -491,7 +491,7 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/divvy/divvyd/releases/tag/0.27.3))
+defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/xdv/divvyd/releases/tag/0.27.3))
 depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://divvy.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://divvy.com/build/known-amendments/#depositauth))
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
 disallowIncomingXDV | boolean | *Optional* Indicates that client applications should not send XDV to this account. Not enforced by divvyd.
@@ -2799,7 +2799,7 @@ This method returns a promise that resolves with an array of objects with the fo
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/divvy/divvyd/releases/tag/0.27.3))
+defaultDivvy | boolean | *Optional* Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/xdv/divvyd/releases/tag/0.27.3))
 depositAuth | boolean | *Optional* Enable [Deposit Authorization](https://divvy.com/build/deposit-authorization/) on this account. If set, transactions cannot send value of any kind to this account unless the sender of those transactions is the account itself. (Requires the [DepositAuth amendment](https://divvy.com/build/known-amendments/#depositauth))
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
 disallowIncomingXDV | boolean | *Optional* Indicates that client applications should not send XDV to this account. Not enforced by divvyd.

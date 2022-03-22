@@ -26,7 +26,7 @@ Install `divvy-lib`:
 $ yarn add divvy-lib
 ```
 
-Then see the [documentation](https://github.com/divvy/divvy-lib/blob/develop/docs/index.md) and [code samples](https://github.com/divvy/divvy-lib/tree/develop/docs/samples)
+Then see the [documentation](https://github.com/xdv/divvy-lib/blob/develop/docs/index.md) and [code samples](https://github.com/xdv/divvy-lib/tree/develop/docs/samples)
 
 ## Running tests
 

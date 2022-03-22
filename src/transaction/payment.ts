@@ -119,7 +119,7 @@ function createPaymentTransaction(address: string, paymentArgument: Payment
   if (!isXDVToXDVPayment(payment)) {
     // Don't set SendMax for XDV->XDV payment
     // temREDUNDANT_SEND_MAX removed in:
-    // https://github.com/divvy/divvyd/commit/
+    // https://github.com/xdv/divvyd/commit/
     //  c522ffa6db2648f1d8a987843e7feabf1a0b7de8/
     if (payment.allowPartialPayment === true
         || payment.destination.minAmount !== undefined) {

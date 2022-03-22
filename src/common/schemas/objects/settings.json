@@ -5,7 +5,7 @@
   "properties": {
     "defaultDivvy": {
       "type": "boolean",
-      "description": "Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/divvy/divvyd/releases/tag/0.27.3))"
+      "description": "Enable [rippling](https://divvy.com/build/understanding-the-nodivvy-flag/) on this account’s trust lines by default. (New in [divvyd 0.27.3](https://github.com/xdv/divvyd/releases/tag/0.27.3))"
     },
     "depositAuth": {
       "type": "boolean",
