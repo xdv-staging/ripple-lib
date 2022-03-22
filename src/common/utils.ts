@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 import BigNumber from 'bignumber.js'
-const {deriveKeypair} = require('divvy-keypairs')
+const {deriveKeypair} = require('ripple-keypairs')
 
 import {Amount, DivvydAmount} from './types/objects'
 

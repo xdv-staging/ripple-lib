@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
-import binary = require('divvy-binary-codec')
-const {computeTransactionHash} = require('divvy-hashes')
+import binary = require('ripple-binary-codec')
+const {computeTransactionHash} = require('ripple-hashes')
 import * as utils from './utils'
 import parseTransaction from './parse/transaction'
 import getTransaction from './transaction'

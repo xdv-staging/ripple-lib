@@ -1,6 +1,6 @@
 import * as common from '../common'
-import keypairs = require('divvy-keypairs')
-import binary = require('divvy-binary-codec')
+import keypairs = require('ripple-keypairs')
+import binary = require('ripple-binary-codec')
 const {validate, xdvToDrops} = common
 
 function signPaymentChannelClaim(channel: string, amount: string,

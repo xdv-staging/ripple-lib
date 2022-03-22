@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import hashes = require('divvy-hashes')
+import hashes = require('ripple-hashes')
 import * as common from '../common'
 
 function convertLedgerHeader(header): any {

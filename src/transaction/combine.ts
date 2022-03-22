@@ -1,10 +1,10 @@
 import * as _ from 'lodash'
-import binary = require('divvy-binary-codec')
+import binary = require('ripple-binary-codec')
 import * as utils from './utils'
 import BigNumber from 'bignumber.js'
-import {decodeAddress} from 'divvy-address-codec'
+import {decodeAddress} from 'ripple-address-codec'
 import {validate} from '../common'
-import {computeBinaryTransactionHash} from 'divvy-hashes'
+import {computeBinaryTransactionHash} from 'ripple-hashes'
 
 function addressToBigNumber(address) {
   const hex = (new Buffer(decodeAddress(address))).toString('hex')

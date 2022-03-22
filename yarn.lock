@@ -3693,28 +3693,18 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
-divvy-address-codec@^2.0.1:
+ripple-address-codec@2.0.1, ripple-address-codec@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.yarnpkg.com/divvy-address-codec/-/divvy-address-codec-2.0.1.tgz#eddbe3a7960d2e02c5c1c74fb9a9fa0d2dfb6571"
+  resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-2.0.1.tgz#eddbe3a7960d2e02c5c1c74fb9a9fa0d2dfb6571"
+  integrity sha1-7dvjp5YNLgLFwcdPuan6DS37ZXE=
   dependencies:
     hash.js "^1.0.3"
     x-address-codec "^0.7.0"
 
-divvy-binary-codec@^0.1.0:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/divvy-binary-codec/-/divvy-binary-codec-0.1.12.tgz#30fb61a8d5bf61301899616c6f842e393082e385"
-  dependencies:
-    babel-runtime "^6.6.1"
-    bn.js "^4.11.3"
-    create-hash "^1.1.2"
-    decimal.js "^5.0.8"
-    inherits "^2.0.1"
-    lodash "^4.12.0"
-    divvy-address-codec "^2.0.1"
-
-divvy-binary-codec@^0.1.13:
+ripple-binary-codec@0.1.13:
   version "0.1.13"
-  resolved "https://registry.yarnpkg.com/divvy-binary-codec/-/divvy-binary-codec-0.1.13.tgz#c68951405a17a71695551e789966ff376da552e4"
+  resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-0.1.13.tgz#c68951405a17a71695551e789966ff376da552e4"
+  integrity sha1-xolRQFoXpxaVVR54mWb/N22lUuQ=
   dependencies:
     babel-runtime "^6.6.1"
     bn.js "^4.11.3"
@@ -3722,31 +3712,46 @@ divvy-binary-codec@^0.1.13:
     decimal.js "^5.0.8"
     inherits "^2.0.1"
     lodash "^4.12.0"
-    divvy-address-codec "^2.0.1"
+    ripple-address-codec "^2.0.1"
 
-divvy-hashes@^0.3.1:
+ripple-binary-codec@^0.1.0:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-0.1.12.tgz#30fb61a8d5bf61301899616c6f842e393082e385"
+  dependencies:
+    babel-runtime "^6.6.1"
+    bn.js "^4.11.3"
+    create-hash "^1.1.2"
+    decimal.js "^5.0.8"
+    inherits "^2.0.1"
+    lodash "^4.12.0"
+    ripple-address-codec "^2.0.1"
+
+ripple-hashes@0.3.1:
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/divvy-hashes/-/divvy-hashes-0.3.1.tgz#f2f46f1ff05e6487500a99839019114cd2482411"
+  resolved "https://registry.yarnpkg.com/ripple-hashes/-/ripple-hashes-0.3.1.tgz#f2f46f1ff05e6487500a99839019114cd2482411"
+  integrity sha1-8vRvH/BeZIdQCpmDkBkRTNJIJBE=
   dependencies:
     bignumber.js "^4.1.0"
     create-hash "^1.1.2"
-    divvy-address-codec "^2.0.1"
-    divvy-binary-codec "^0.1.0"
+    ripple-address-codec "^2.0.1"
+    ripple-binary-codec "^0.1.0"
 
-divvy-keypairs@^0.10.1:
+ripple-keypairs@0.10.1:
   version "0.10.1"
-  resolved "https://registry.yarnpkg.com/divvy-keypairs/-/divvy-keypairs-0.10.1.tgz#ef796b519bb202682515e7cdd6063762636943e6"
+  resolved "https://registry.yarnpkg.com/ripple-keypairs/-/ripple-keypairs-0.10.1.tgz#ef796b519bb202682515e7cdd6063762636943e6"
+  integrity sha1-73lrUZuyAmglFefN1gY3YmNpQ+Y=
   dependencies:
     babel-runtime "^5.8.20"
     bn.js "^3.1.1"
     brorand "^1.0.5"
     elliptic "^5.1.0"
     hash.js "^1.0.3"
-    divvy-address-codec "^2.0.1"
+    ripple-address-codec "^2.0.1"
 
-divvy-lib-transactionparser@^0.6.2:
+ripple-lib-transactionparser@0.6.2:
   version "0.6.2"
-  resolved "https://registry.yarnpkg.com/divvy-lib-transactionparser/-/divvy-lib-transactionparser-0.6.2.tgz#eb117834816cab3398445a74ec3cacec95b6b5fa"
+  resolved "https://registry.yarnpkg.com/ripple-lib-transactionparser/-/ripple-lib-transactionparser-0.6.2.tgz#eb117834816cab3398445a74ec3cacec95b6b5fa"
+  integrity sha1-6xF4NIFsqzOYRFp07Dys7JW2tfo=
   dependencies:
     bignumber.js "^4.1.0"
     lodash "^4.17.4"
